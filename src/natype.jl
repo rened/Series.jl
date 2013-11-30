@@ -1,10 +1,10 @@
 ##############################################################################
 ##
-## NA's via the NAtype
+## NAs via the NAtype
 ##
 ## Inspirations:
-##  * R's NA's
-##  * Panda's discussion of NA's:
+##  * R's NAs
+##  * Panda's discussion of NAs:
 ##    http://pandas.pydata.org/pandas-docs/stable/missing_data.html
 ##  * NumPy's analysis of the issue:
 ##    https://github.com/numpy/numpy/blob/master/doc/neps/missing-data.rst
