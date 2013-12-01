@@ -1,18 +1,30 @@
+using Datetime
+
 module A
+
+using Datetime
 
 import Base.show
 
-export Series
+export Series, 
+       head,
+       tail,
+       first, 
+       last
 
-type Series
-  index::Array
-  values::Array
+abstract AbstractSeries
+
+type Series <: AbstractSeries
+  index
+  values
   nas::BitArray
 
   Series(x,y) = new(x,y,falses(length(x)))
 end
 
-######## show
+#################################
+###### show #####################
+#################################
 
 function show(io::IO, p::Series)
   n = length(p.index)
@@ -34,6 +46,18 @@ function show(io::IO, p::Series)
   end
 end
 
+#################################
+###### head, tail ###############
+#################################
+
+head{T<:Series}(x::Array{T}, n::Int) = x[1:n]
+head{T<:Series}(x::Array{T}) = head(x, 3)
+first{T<:Series}(x::Array{T}) = head(x, 1)
+
+tail{T<:Series}(x::Array{T}, n::Int) = x[length(x)-n+1:end]
+tail{T<:Series}(x::Array{T}) = tail(x, 3)
+last{T<:Series}(x::Array{T}) = tail(x, 1)
+ 
 
 
 end # of module
