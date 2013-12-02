@@ -1,8 +1,9 @@
 using Base.Test
 using DataSeries
 
-my_tests = ["test/dataseries.jl",
-            "test/nas.jl"]
+my_tests = ["test/serialpair.jl",
+            "test/serialarray.jl",
+            "test/serialframe.jl"]
 
 print_with_color(:cyan, "Running tests: ") 
 println("")
