@@ -10,9 +10,12 @@ module DataSeries
          head, 
          tail,
          first,
-         last
+         last,
+         @dataseries
   
   include("serialpair.jl")
   include("serialarray.jl")
   include("serialframe.jl")
+  include("serialframe.jl")
+  include("../test/testmacro.jl")
 end

@@ -11,6 +11,7 @@ SerialArray(collection) = SerialArray(collection, "index", "values")
 #################################
 
 length(sa::SerialArray) = length(sa.collection)
+size(sa::SerialArray)   = size(sa.collection)
 
 #################################
 ###### show #####################
