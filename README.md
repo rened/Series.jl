@@ -14,7 +14,6 @@ The three main types in this package include
 julia> Pkg.clone("https://github.com/milktrader/DataSeries.jl")
 ````
 
-
 ## Current API
 ````julia
 julia> using DataSeries
@@ -27,11 +26,38 @@ index  values
 12  15
 4  459
 
-
 julia> sort(sa)
 index  values
 1  10
 4  459
 12  15
 
+julia> sa[1]
+1  10
+
+julia> sa[12]
+ERROR: BoundsError()
+ in getindex at /Users/Administrator/.julia/DataSeries/src/seriesarray.jl:60
+
+julia> sa[[12]]
+index  values
+12  15
+
+# future time series functionality
+
+julia> using Datetime
+
+julia> foo = SeriesPair(today(), 10); bar = SeriesPair(today()+days(1), 15); baz = SeriesPair(today()-days(1), 459);
+
+julia> sa  = SeriesArray([foo, bar, baz])
+index  values
+2013-12-03  10
+2013-12-04  15
+2013-12-02  459
+
+julia> sort(sa)
+index  values
+2013-12-02  459
+2013-12-03  10
+2013-12-04  15
 ````
