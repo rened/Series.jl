@@ -48,9 +48,13 @@ function getindexMAGIC(sa::SerialArray, indexarray::Array)
     msg = "Need types to match between SerialArray and the indexarray argument"
     throw(ArgumentError(msg))
   end
+  
+  # capture typeof SerialPair
+    spT = typeof(sa.collection[1].index)
+    spV = typeof(sa.collection[1].value)
 
   # double loop solution
-  unsatisfactory_container = SerialPair[]
+  unsatisfactory_container = SerialPair{spT, spV}[]
   for i in 1:length(indexarray)
     for j in 1:length(sa)
       if indexarray[i] == sa[j].index
@@ -58,8 +62,10 @@ function getindexMAGIC(sa::SerialArray, indexarray::Array)
       end
      end
    end
-  unsatisfactory_container
+
+  better_container = SerialArray(unsatisfactory_container)
 end
+
 #################################
 ###### show #####################
 #################################
