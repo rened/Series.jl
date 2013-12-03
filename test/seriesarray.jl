@@ -2,11 +2,11 @@ using Base.Test
 using DataSeries
 
 let
-# dummy SerialArray
-  sp1 = SerialPair(1, 123)
-  sp2 = SerialPair(3, 789)
-  sp3 = SerialPair(2, 456)
-  sa  = SerialArray([sp1, sp2, sp3])
+# dummy SeriesArray
+  sp1 = SeriesPair(1, 123)
+  sp2 = SeriesPair(3, 789)
+  sp3 = SeriesPair(2, 456)
+  sa  = SeriesArray([sp1, sp2, sp3])
   ss  = sort(sa)
 
 

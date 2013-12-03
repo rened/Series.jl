@@ -1,45 +1,45 @@
-type SerialArray{T,V} <: AbstractSeries
-  collection::Array{SerialPair{T,V},1} # this prevents arrays of mixed types
+type SeriesArray{T,V} <: AbstractSeries
+  collection::Array{SeriesPair{T,V},1} # this prevents arrays of mixed types
   idxname::String
   valname::String
 end
 
-SerialArray(collection) = SerialArray(collection, "index", "values")
+SeriesArray(collection) = SeriesArray(collection, "index", "values")
 
 #################################
 ###### size, length #############
 #################################
 
-length(sa::SerialArray) = length(sa.collection)
-size(sa::SerialArray)   = size(sa.collection)
+length(sa::SeriesArray) = length(sa.collection)
+size(sa::SeriesArray)   = size(sa.collection)
 
 #################################
 ###### sort, getindexMAGIC ######
 #################################
 
-sortindex(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
+sortindex(sa::SeriesArray)   = sort([s.index for s in sa.collection]) 
 
-function Base.sort(sa::SerialArray)
+function Base.sort(sa::SeriesArray)
   #sorted_index = sort([s.index for s in sa.collection])   # Array{T,1} where T is explicit
   sorted_index = sortindex(sa)
   #return getindexMAGIC(sa, sorted_index) # see getindexMAGIC below
   sa[sorted_index]
 end
 
-function getindexMAGIC(sa::SerialArray, indexarray::Array)
+function getindexMAGIC(sa::SeriesArray, indexarray::Array)
   # types must match, though this might be caught in method signature
   if typeof(sa.collection[1].index)  !== typeof(indexarray[1])
-    msg = "Need types to match between SerialArray and the indexarray argument"
+    msg = "Need types to match between SeriesArray and the indexarray argument"
     throw(ArgumentError(msg))
   end
   
-  # capture typeof SerialPair
+  # capture typeof SeriesPair
     spT = typeof(sa.collection[1].index)
     spV = typeof(sa.collection[1].value)
 
   # double loop solution
-  unsatisfactory_container = SerialPair{spT, spV}[]
-#  res = SerialArray(SerialPair{spT, spV}[]) #doesn't work 
+  unsatisfactory_container = SeriesPair{spT, spV}[]
+#  res = SeriesArray(SeriesPair{spT, spV}[]) #doesn't work 
   for i in 1:length(indexarray)
     for j in 1:length(sa)
       if indexarray[i] == sa[j].index
@@ -48,7 +48,7 @@ function getindexMAGIC(sa::SerialArray, indexarray::Array)
       end
      end
    end
-  better_container = SerialArray(unsatisfactory_container)
+  better_container = SeriesArray(unsatisfactory_container)
   #res
 end
 
@@ -57,16 +57,16 @@ end
 #################################
 
 # sa[1:3] is the first 3 rows
-getindex(sa::SerialArray, row::Int) = sa.collection[row]
+getindex(sa::SeriesArray, row::Int) = sa.collection[row]
 
 # sa[array_of_index_values] or sa[[1,2,3]] to get sa where index == 1,2,3
-getindex(sa::SerialArray, idx::Array) = getindexMAGIC(sa, idx) 
+getindex(sa::SeriesArray, idx::Array) = getindexMAGIC(sa, idx) 
 
 #################################
 ###### show #####################
 #################################
 
-function show(io::IO, p::SerialArray)
+function show(io::IO, p::SeriesArray)
   n = length(p.collection)
     if n < 7
       println(io, p.idxname,"  ", p.valname)
@@ -96,7 +96,7 @@ end
  pad(item, num, dir) = dir == 'l' ? lpad(item, num) : rpad(item, num)
  maxShowLength(v::AbstractVector) = mapreduce(x->length(_string(x)), max, 0, v)
 
- function maxShowLength(sa::SerialArray)
+ function maxShowLength(sa::SeriesArray)
      res = 0
      for i in 1:length(sa)
          if isdefined(sa.collection, i)
@@ -193,11 +193,11 @@ end
 ###### head, tail ###############
 #################################
 
-head{T<:SerialArray}(x::Array{T}, n::Int) = x[1:n]
-head{T<:SerialArray}(x::T, n::Int) = x[1:n]
-head{T<:SerialArray}(x::Array{T}) = head(x, 3)
-first{T<:SerialArray}(x::Array{T}) = head(x, 1)
+head{T<:SeriesArray}(x::Array{T}, n::Int) = x[1:n]
+head{T<:SeriesArray}(x::T, n::Int) = x[1:n]
+head{T<:SeriesArray}(x::Array{T}) = head(x, 3)
+first{T<:SeriesArray}(x::Array{T}) = head(x, 1)
 
-tail{T<:SerialArray}(x::Array{T}, n::Int) = x[length(x)-n+1:end]
-tail{T<:SerialArray}(x::Array{T}) = tail(x, 3)
-last{T<:SerialArray}(x::Array{T}) = tail(x, 1)
+tail{T<:SeriesArray}(x::Array{T}, n::Int) = x[length(x)-n+1:end]
+tail{T<:SeriesArray}(x::Array{T}) = tail(x, 3)
+last{T<:SeriesArray}(x::Array{T}) = tail(x, 1)

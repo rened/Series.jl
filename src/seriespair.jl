@@ -1,6 +1,6 @@
 abstract AbstractSeries
 
-immutable SerialPair{T, V} <: AbstractSeries
+immutable SeriesPair{T, V} <: AbstractSeries
   index::T
   value::V
 end
@@ -9,7 +9,7 @@ end
 ###### show #####################
 #################################
 
-function show(io::IO, p::SerialPair)
+function show(io::IO, p::SeriesPair)
    #print(io, p.index, "  |  ", join([@sprintf("%.4f",x) for x in p.value]," "))
    print(io, p.index, "  ",  p.value)
 end

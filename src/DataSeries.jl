@@ -6,9 +6,9 @@ module DataSeries
          Base.getindex
          Base.sort
 
-  export SerialPair, 
-         SerialArray,
-         SerialFrame,   # not being implemented yet, just an idea
+  export SeriesPair, 
+         SeriesArray,
+         SeriesFrame,   # not being implemented yet, just an idea
          sortindex, 
          getindexMAGIC, 
          head, 
@@ -17,9 +17,9 @@ module DataSeries
          last,
          @dataseries
   
-  include("serialpair.jl")
-  include("serialarray.jl")
-  include("serialframe.jl")
-  include("serialframe.jl")
+  include("seriespair.jl")
+  include("seriesarray.jl")
+  include("seriesframe.jl")
+  include("seriesframe.jl")
   include("../test/testmacro.jl")
 end
