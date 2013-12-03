@@ -12,35 +12,24 @@ SerialArray(collection) = SerialArray(collection, "index", "values")
 
 length(sa::SerialArray) = length(sa.collection)
 size(sa::SerialArray)   = size(sa.collection)
-#Base.sort(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
+
 sortindex(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
 
-# function Base.sort(sa::SerialArray)
-#   sorted_index = sort([s.index for s in sa.collection])   # Array{T,1} where T is explicit
-#   sorted_sa = SerialPair[]
-#   for i in iteration
-#   for j in iteration
-#     if sorted_index[i] == sa[j].index 
-#     push!(sorted_sa, sa[[j]) #assign that SerialPair
-#     end
-#   end
-#   return sorted_sa
-# end
-
 function Base.sort(sa::SerialArray)
-  sorted_index = sort([s.index for s in sa.collection])   # Array{T,1} where T is explicit
-  return getindexMAGIC(sa, sorted_index) # see getindexMAGIC below
+  #sorted_index = sort([s.index for s in sa.collection])   # Array{T,1} where T is explicit
+  sorted_index = sortindex(sa)
+  #return getindexMAGIC(sa, sorted_index) # see getindexMAGIC below
+  sa[sorted_index]
 end
+
 #################################
 ###### getindex, setindex #######
 #################################
 
 getindex(sa::SerialArray, row::Int) = sa.collection[row]
-#getindex(sa::SerialArray{T,V}, idx::{T}) = sa.collection[T(string(idx))]
 
-#need to get index when index == value, instead of getting the row
-getindex(sa::SerialArray, idx) = sa.collection[int(string(idx))]
-
+# sa[array_of_index_values] or sa[[1,2,3]] to get sa where index is 1,2,3
+getindex(sa::SerialArray, idx::Array) = getindexMAGIC(sa, idx) 
 
 function getindexMAGIC(sa::SerialArray, indexarray::Array)
   # types must match, though this might be caught in method signature
@@ -55,15 +44,17 @@ function getindexMAGIC(sa::SerialArray, indexarray::Array)
 
   # double loop solution
   unsatisfactory_container = SerialPair{spT, spV}[]
+#  res = SerialArray(SerialPair{spT, spV}[]) #doesn't work 
   for i in 1:length(indexarray)
     for j in 1:length(sa)
       if indexarray[i] == sa[j].index
         push!(unsatisfactory_container, sa[j])
+        #push!(res, sa[j])
       end
      end
    end
-
   better_container = SerialArray(unsatisfactory_container)
+  #res
 end
 
 #################################
