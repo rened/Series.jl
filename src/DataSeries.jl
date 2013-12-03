@@ -4,10 +4,12 @@ module DataSeries
          Base.size,
          Base.length
          Base.getindex
+         Base.sort
 
   export SerialPair, 
          SerialArray,
          SerialFrame,   # not being implemented yet, just an idea
+         sortindex, 
          head, 
          tail,
          first,
