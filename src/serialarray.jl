@@ -17,7 +17,9 @@ size(sa::SerialArray)   = size(sa.collection)
 ###### getindex, setindex #######
 #################################
 
-getindex(sa::SerialArray, r) = sa.collection[r]
+getindex(sa::SerialArray, row::Int) = sa.collection[row]
+#getindex(sa::SerialArray{T,V}, idx::{T}) = sa.collection[T(string(idx))]
+getindex(sa::SerialArray, idx) = sa.collection[int(string(idx))]
 
 #################################
 ###### show #####################
