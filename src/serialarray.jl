@@ -14,6 +14,12 @@ length(sa::SerialArray) = length(sa.collection)
 size(sa::SerialArray)   = size(sa.collection)
 
 #################################
+###### getindex, setindex #######
+#################################
+
+getindex(sa::SerialArray, r) = sa.collection[r]
+
+#################################
 ###### show #####################
 #################################
 
@@ -39,34 +45,30 @@ function show(io::IO, p::SerialArray)
 end
 
 ########### # this is cut and paste from DataFrames.jl
-########### 
-########### function summary(df::AbstractSeries)
-###########     nrowz, ncolz = size(df)
-###########     "$(typeof(df)) with $(nrowz) rows, $(ncolz) columns"
-########### end
-########### 
 ########### # to print a DataFrame, find the max string length of each column
 ########### # then print the column names with an appropriate buffer
 ########### # then row-by-row print with an appropriate buffer
-########### _string(x) = sprint(showcompact, x)
-########### pad(item, num, dir) = dir == 'l' ? lpad(item, num) : rpad(item, num)
-########### maxShowLength(v::AbstractVector) = mapreduce(x->length(_string(x)), max, 0, v)
-########### function maxShowLength(dv::DataVector)
-###########     res = 0
-###########     for i in 1:length(dv)
-###########         if isdefined(dv.data, i)
-###########             res = max(res, length(_string(dv[i])))
-###########         else
-###########             res = max(res, length(Base.undef_ref_str))
-###########         end
-###########     end
-###########     return res
-########### end
-########### #maxShowLength(dv::AbstractVector) = mapreduce(x->length(_string(x)), max, 0, dv)
-########### maxShowLength(df::AbstractSeries, col::String) = max(maxShowLength(df[col]), length(col))
-########### colwidths(df::AbstractSeries) = [maxShowLength(df, col) for col=colnames(df)]
-########### colwidths(row::Array{Any}) = [length(_string(row[i])) for i = 1:length(row)]
-########### 
+
+ _string(x) = sprint(showcompact, x)
+ pad(item, num, dir) = dir == 'l' ? lpad(item, num) : rpad(item, num)
+ maxShowLength(v::AbstractVector) = mapreduce(x->length(_string(x)), max, 0, v)
+
+ function maxShowLength(sa::SerialArray)
+     res = 0
+     for i in 1:length(sa)
+         if isdefined(sa.collection, i)
+             res = max(res, length(_string(sa[i])))
+         else
+             res = max(res, length(Base.undef_ref_str))
+         end
+     end
+     return res
+ end
+ maxShowLength(sa::AbstractSeries) = max(maxShowLength([sa]), length(sa.collection))
+# colwidths(df::AbstractSeries) = [maxShowLength(df, col) for col=colnames(df)]
+#  colwidths(row::sa.idxname) = [length(_string(row[i])) for i = 1:length(row)]
+
+ 
 ########### Base.showall(io::IO, df::AbstractSeries) = show(io, df, nrow(df))
 ########### function Base.show(io::IO, df::AbstractSeries)
 ###########     printed_width = sum(colwidths(df)) + length(ncol(df)) * 2 + 5

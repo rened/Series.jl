@@ -3,6 +3,7 @@ module DataSeries
   import Base.show,
          Base.size,
          Base.length
+         Base.getindex
 
   export SerialPair, 
          SerialArray,
