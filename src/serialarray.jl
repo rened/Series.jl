@@ -7,11 +7,15 @@ end
 SerialArray(collection) = SerialArray(collection, "index", "values")
 
 #################################
-###### size, length, sort #######
+###### size, length #############
 #################################
 
 length(sa::SerialArray) = length(sa.collection)
 size(sa::SerialArray)   = size(sa.collection)
+
+#################################
+###### sort, getindexMAGIC ######
+#################################
 
 sortindex(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
 
@@ -21,15 +25,6 @@ function Base.sort(sa::SerialArray)
   #return getindexMAGIC(sa, sorted_index) # see getindexMAGIC below
   sa[sorted_index]
 end
-
-#################################
-###### getindex, setindex #######
-#################################
-
-getindex(sa::SerialArray, row::Int) = sa.collection[row]
-
-# sa[array_of_index_values] or sa[[1,2,3]] to get sa where index is 1,2,3
-getindex(sa::SerialArray, idx::Array) = getindexMAGIC(sa, idx) 
 
 function getindexMAGIC(sa::SerialArray, indexarray::Array)
   # types must match, though this might be caught in method signature
@@ -56,6 +51,16 @@ function getindexMAGIC(sa::SerialArray, indexarray::Array)
   better_container = SerialArray(unsatisfactory_container)
   #res
 end
+
+#################################
+###### getindex, setindex #######
+#################################
+
+# sa[1:3] is the first 3 rows
+getindex(sa::SerialArray, row::Int) = sa.collection[row]
+
+# sa[array_of_index_values] or sa[[1,2,3]] to get sa where index == 1,2,3
+getindex(sa::SerialArray, idx::Array) = getindexMAGIC(sa, idx) 
 
 #################################
 ###### show #####################
