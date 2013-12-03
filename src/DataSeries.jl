@@ -10,6 +10,7 @@ module DataSeries
          SerialArray,
          SerialFrame,   # not being implemented yet, just an idea
          sortindex, 
+         getindexMAGIC, 
          head, 
          tail,
          first,

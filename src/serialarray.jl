@@ -13,7 +13,7 @@ SerialArray(collection) = SerialArray(collection, "index", "values")
 length(sa::SerialArray) = length(sa.collection)
 size(sa::SerialArray)   = size(sa.collection)
 #Base.sort(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
-#sortindex(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
+sortindex(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
 
 # function Base.sort(sa::SerialArray)
 #   sorted_index = sort([s.index for s in sa.collection])   # Array{T,1} where T is explicit
@@ -27,10 +27,10 @@ size(sa::SerialArray)   = size(sa.collection)
 #   return sorted_sa
 # end
 
-# function Base.sort(sa::SerialArray)
-#   sorted_index = sort([s.index for s in sa.collection])   # Array{T,1} where T is explicit
-#   return sa[sorted_index] # see getindexMAGIC below
-# end
+function Base.sort(sa::SerialArray)
+  sorted_index = sort([s.index for s in sa.collection])   # Array{T,1} where T is explicit
+  return getindexMAGIC(sa, sorted_index) # see getindexMAGIC below
+end
 #################################
 ###### getindex, setindex #######
 #################################
@@ -42,10 +42,24 @@ getindex(sa::SerialArray, row::Int) = sa.collection[row]
 getindex(sa::SerialArray, idx) = sa.collection[int(string(idx))]
 
 
-# getindexMAGIC(sa::SerialArray, indexarray::Array)
-#   magic code goes here
-#   return sa[indexarray]
-# end
+function getindexMAGIC(sa::SerialArray, indexarray::Array)
+  # types must match, though this might be caught in method signature
+  if typeof(sa.collection[1].index)  !== typeof(indexarray[1])
+    msg = "Need types to match between SerialArray and the indexarray argument"
+    throw(ArgumentError(msg))
+  end
+
+  # double loop solution
+  unsatisfactory_container = SerialPair[]
+  for i in 1:length(indexarray)
+    for j in 1:length(sa)
+      if indexarray[i] == sa[j].index
+        push!(unsatisfactory_container, sa[j])
+      end
+     end
+   end
+  unsatisfactory_container
+end
 #################################
 ###### show #####################
 #################################
