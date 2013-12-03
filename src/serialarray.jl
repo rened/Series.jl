@@ -13,29 +13,39 @@ SerialArray(collection) = SerialArray(collection, "index", "values")
 length(sa::SerialArray) = length(sa.collection)
 size(sa::SerialArray)   = size(sa.collection)
 #Base.sort(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
-sortindex(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
+#sortindex(sa::SerialArray)   = sort([s.index for s in sa.collection]) 
 
-function magic(sa::SerialArray, sorted_index_value_array_from_sort(sa::SerialArray))
-  sorted_sa = SerialPair[]
-  for i in iteration
-  for j in iteration
-    if sorted_index_value_array[i] == sa[j].index 
-    push!(empty array, sa[[j]) #assign that SerialPair
-    end
-  end
-  sorted_sa = 
-  return sorted_sa
-end
+# function Base.sort(sa::SerialArray)
+#   sorted_index = sort([s.index for s in sa.collection])   # Array{T,1} where T is explicit
+#   sorted_sa = SerialPair[]
+#   for i in iteration
+#   for j in iteration
+#     if sorted_index[i] == sa[j].index 
+#     push!(sorted_sa, sa[[j]) #assign that SerialPair
+#     end
+#   end
+#   return sorted_sa
+# end
 
+# function Base.sort(sa::SerialArray)
+#   sorted_index = sort([s.index for s in sa.collection])   # Array{T,1} where T is explicit
+#   return sa[sorted_index] # see getindexMAGIC below
+# end
 #################################
 ###### getindex, setindex #######
 #################################
 
 getindex(sa::SerialArray, row::Int) = sa.collection[row]
 #getindex(sa::SerialArray{T,V}, idx::{T}) = sa.collection[T(string(idx))]
+
 #need to get index when index == value, instead of getting the row
 getindex(sa::SerialArray, idx) = sa.collection[int(string(idx))]
 
+
+# getindexMAGIC(sa::SerialArray, indexarray::Array)
+#   magic code goes here
+#   return sa[indexarray]
+# end
 #################################
 ###### show #####################
 #################################
