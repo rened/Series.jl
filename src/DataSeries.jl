@@ -11,6 +11,7 @@ module DataSeries
          SeriesFrame,   # not being implemented yet, just an idea
          sortindex, 
          getindexMAGIC, 
+         insertpair, 
          head, 
          tail,
          first,

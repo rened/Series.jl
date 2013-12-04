@@ -14,7 +14,8 @@ length(sa::SeriesArray) = length(sa.collection)
 size(sa::SeriesArray)   = size(sa.collection)
 
 #################################
-###### sort, getindexMAGIC ######
+## sort, sortindex, insert_pair #
+#######  getindexMAGIC ##########
 #################################
 
 sortindex(sa::SeriesArray)   = sort([s.index for s in sa.collection]) 
@@ -52,6 +53,26 @@ function getindexMAGIC(sa::SeriesArray, indexarray::Array)
   #res
 end
 
+function insertpair(sa::SeriesArray, pr::SeriesPair)
+  # check for types matching
+ 
+  #capture types
+   spT = typeof(sa.collection[1].index)
+  spV = typeof(sa.collection[1].value)
+ 
+  #double loop
+  container = SeriesPair{spT, spV}[]
+ 
+  for i in 1:length(sa)
+  push!(container, sa[i])
+  end
+ 
+  push!(container, pr)
+ 
+  #res = SeriesArray(container)
+  sa = SeriesArray(container)
+end
+
 #################################
 ###### getindex, setindex #######
 #################################
@@ -61,6 +82,14 @@ getindex(sa::SeriesArray, row::Int) = sa.collection[row]
 
 # sa[array_of_index_values] or sa[[1,2,3]] to get sa where index == 1,2,3
 getindex(sa::SeriesArray, idx::Array) = getindexMAGIC(sa, idx) 
+
+
+# sa[length(sa)+1] so far only
+setindex!(sa::SeriesArray, pr::SeriesPair, pos::Int64) = insertpair(sa, pr) 
+
+
+
+
 
 #################################
 ###### show #####################
