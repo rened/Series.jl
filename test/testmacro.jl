@@ -1,6 +1,6 @@
 macro dataseries()
   println("")
-  reload(Pkg.dir("DataSeries/run_tests.jl"))
+  reload(Pkg.dir("DataSeries/test/runtests.jl"))
 end
 
 ########### time trial wrapper #####################################
