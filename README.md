@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/JuliaStats/DataSeries.jl.png)](https://travis-ci.org/JuliaStats/DataSeries.jl)
+[![Build Status](https://travis-ci.org/milktrader/DataSeries.jl.png)](https://travis-ci.org/milktrader/DataSeries.jl)
 
 DataSeries.jl
 =============
