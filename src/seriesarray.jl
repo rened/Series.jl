@@ -141,7 +141,7 @@ end
 #  colwidths(row::sa.idxname) = [length(_string(row[i])) for i = 1:length(row)]
 
  
-########### Base.showall(io::IO, df::AbstractSeries) = show(io, df, nrow(df))
+########### Base.showall(io::IO, df::AbstractSeries) = show(io, df, size(df, 1))
 ########### function Base.show(io::IO, df::AbstractSeries)
 ###########     printed_width = sum(colwidths(df)) + length(ncol(df)) * 2 + 5
 ###########     if printed_width > Base.tty_cols()
@@ -181,7 +181,7 @@ end
 ###########         pretty_show(io, gr)
 ###########         println(io)
 ###########     end
-###########     N = nrow(df)
+###########     N = size(df, 1)
 ###########     Nmx = Nmx   # maximum head and tail lengths
 ###########     if N <= 2Nmx
 ###########         rowrng = 1:min(2Nmx,N)
