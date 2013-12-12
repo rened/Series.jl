@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/JuliaStats/DataSeries.jl.png)](https://travis-ci.org/JuliaStats/DataSeries.jl)
+
 DataSeries.jl
 =============
 
