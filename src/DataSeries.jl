@@ -8,6 +8,7 @@ module DataSeries
 
   export SeriesPair, 
          SeriesArray,
+         SeriesArray1,
          SeriesFrame,   # not being implemented yet, just an idea
          sortindex, 
          getindexMAGIC, 
