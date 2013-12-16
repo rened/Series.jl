@@ -6,8 +6,8 @@ DataSeries.jl
 The three main types in this package include
 
 * `SeriesPair` (an immutable type comprised of an index and value)
-* `SeriesArray` (an array of `SeriesPair` that enforces same index and value types)
-* `SeriesFrame` (a placeholder for possible future multi-column implementation)
+* ~~`SeriesArray` (an array of `SeriesPair` that enforces same index and value types)~~
+* ~~`SeriesFrame` (a placeholder for possible future multi-column implementation)~~
 
 ## Installation
 
