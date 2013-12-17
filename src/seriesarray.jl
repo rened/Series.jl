@@ -7,24 +7,29 @@
 import Core.Array
 
 function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
-  key = typeof(args[1][1].index)[]
   
-  # instead, create array of index values from args
+  # create array of index values from args
+  allkey = typeof(args[1][1].index)[]
   for arg in args
     for ar in arg
-      push!(key, ar.index)
+      push!(allkey, ar.index)
     end
   end
 
   # and sort without duplicates
-  sortedkey = sortandremoveduplicates(key)
+  key = sortandremoveduplicates(allkey)
 
-  arr = fill(NaN, 
-             maximum([length(arg) for arg in args]), 
-             # length(key) 
-             length(args))
+  # match each arg in args with key 
+  arr = fill(NaN, length(key), length(args))
+  for j in 1:length(args)
+    for i = 1:length([in(args[j][i].index, k) for k in key]) # the comprehension is a bool array
+#    for i = 1:3
+      [in(args[j][i].index, k) for k in key] == true?
+      arr[i,args[j]] = args[j][i].value : nothing
+    end
+  end
+  key, args, arr
 
-  sortedkey, args 
 end
 
 
