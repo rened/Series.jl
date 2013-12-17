@@ -1,18 +1,9 @@
 module DataSeries
 
   import Base.show,
-         Base.size,
-         Base.length
-         Base.getindex
-         Base.sort
+         Base.isless
 
   export SeriesPair, 
-         SeriesArray,
-         SeriesArray1,
-         SeriesFrame,   # not being implemented yet, just an idea
-         sortindex, 
-         getindexMAGIC, 
-         insertpair, 
          head, 
          tail,
          first,
@@ -21,7 +12,6 @@ module DataSeries
   
   include("seriespair.jl")
   include("seriesarray.jl")
-  include("seriesframe.jl")
-  include("seriesframe.jl")
+  include("seriesdataframe.jl")
   include("../test/testmacro.jl")
 end
