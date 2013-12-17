@@ -1,5 +1,28 @@
 # methods to construct Array{SeriesPair{T,V},1} and operate on it
 
+#################################
+# Array method ##################
+#################################
+
+import Core.Array
+
+function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
+
+#  arr = fill(NaN, maximum(size,1) ,length(args))
+  arr = fill(NaN, 2 ,length(args))
+  
+# find which arg has the lowest and highest index value
+
+
+
+#  for arg in args
+#    if arg[i].index == arg[1].index
+#  push!(arr, 
+#   print(ar.index)
+# end
+# end
+arr
+end
 
 #################################
 # head, tail, first, last  ######
