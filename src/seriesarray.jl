@@ -7,25 +7,24 @@
 import Core.Array
 
 function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
-
-#  arr = fill(NaN, maximum(size,1) ,length(args))
-  arr = fill(NaN, 
-             maximum([length(arg) for arg in args]),
-             length(args))
+  key = typeof(args[1][1].index)[]
   
-# find which arg has the lowest and highest index value
+   # instead, create array of index values from args
+       # for arg in args
+       # print([a.index for a in arg])
+       # end
+   # and sort without duplicates
 
+  arr = fill(NaN, 
+             maximum([length(arg) for arg in args]), 
+             # length(key) 
+             length(args))
 
-
-#  for arg in args
-#    if arg[i].index == arg[1].index
-#  push!(arr, 
-#   print(ar.index)
-# end
-# end
-
-arr
+  key, args 
 end
+
+
+
 
 #################################
 # head, tail, first, last  ######
