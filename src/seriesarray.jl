@@ -21,14 +21,14 @@ function Array{T,V}(args::Array{SeriesPair{T,V},1}...)
 
   # match each arg in args with key 
   arr = fill(NaN, length(key), length(args))
-  for j in 1:length(args)
-    for i = 1:length([in(args[j][i].index, k) for k in key]) # the comprehension is a bool array
-#    for i = 1:3
-      [in(args[j][i].index, k) for k in key] == true?
-      arr[i,args[j]] = args[j][i].value : nothing
+  for i in 1:length(args)
+    for j = 1:length(args[i])
+       t = args[i][j].index .== key
+       k = key[t]
+       arr[k,i] = args[i][j].value 
+      end
     end
-  end
-  key, args, arr
+    arr
 
 end
 
