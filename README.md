@@ -13,16 +13,16 @@ julia> Pkg.clone("https://github.com/milktrader/DataSeries.jl")
 
 DataSeries is a simple, lightweight package that leverages Julia's Array 
 methods to provide functionality important for working with serialized data. 
-The primary mechanism to achieve this is the SeriesPair type, a tuple-like type 
+The primary mechanism to achieve this is the `SeriesPair` type, a tuple-like type 
 with semantics that makes it easy to reason about serialized applications.
 
-SeriesPair is immutable and includes two fields, index and value. When combined 
-into an array, the resulting object becomes an Array{SeriesPair{T,V},1}, which 
+`SeriesPair` is immutable and includes two fields, `index` and `value`. When combined 
+into an array, the resulting object becomes an `Array{SeriesPair{T,V},1}`, which 
 enforces that each index in the array is the same type, and each value in the array 
 is the same type.
 
-DataSeries is an intermediary tool for working with Arrays of a base-defined types 
-(e.g. Float64, Bool), and heterogeneous DataFrames. Conversion and promotion methods 
+DataSeries is an intermediary tool for working with Arrays of base-defined types 
+(e.g. `Float64`, `Bool`), and heterogeneous DataFrames. Conversion and promotion methods 
 are planned to allow transition between the data structures.
 
 To enforce the goal of simplicity, DataSeries only supports single column values.  Multiple 
