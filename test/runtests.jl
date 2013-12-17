@@ -3,7 +3,7 @@ using DataSeries
 
 my_tests = ["seriespair.jl",
             "seriesarray.jl",
-            "seriesframe.jl"]
+            "seriesdataframe.jl"]
 
 print_with_color(:cyan, "Running tests: ") 
 println("")
