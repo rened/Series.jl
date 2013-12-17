@@ -9,21 +9,39 @@ import Core.Array
 function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
   key = typeof(args[1][1].index)[]
   
-   # instead, create array of index values from args
-       # for arg in args
-       # print([a.index for a in arg])
-       # end
-   # and sort without duplicates
+  # instead, create array of index values from args
+  for arg in args
+    for ar in arg
+      push!(key, ar.index)
+    end
+  end
+
+  # and sort without duplicates
+  sortedkey = sortandremoveduplicates(key)
 
   arr = fill(NaN, 
              maximum([length(arg) for arg in args]), 
              # length(key) 
              length(args))
 
-  key, args 
+  sortedkey, args 
 end
 
 
+#################################
+# sortandremoveduplicates #######
+#################################
+
+function sortandremoveduplicates(x::Array)
+  sx = sort(x)
+  res = [sx[1]]
+  for i = 2:length(sx)
+    if sx[i] > sx[i-1]
+    push!(res, sx[i])
+    end
+  end
+  res
+end
 
 
 #################################
