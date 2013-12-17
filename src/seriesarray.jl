@@ -9,7 +9,9 @@ import Core.Array
 function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
 
 #  arr = fill(NaN, maximum(size,1) ,length(args))
-  arr = fill(NaN, 2 ,length(args))
+  arr = fill(NaN, 
+             maximum([length(arg) for arg in args]),
+             length(args))
   
 # find which arg has the lowest and highest index value
 
@@ -21,6 +23,7 @@ function Array{T,V}(args::Array{SeriesPair{T,V},1}...)
 #   print(ar.index)
 # end
 # end
+
 arr
 end
 
