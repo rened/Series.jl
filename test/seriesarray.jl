@@ -3,18 +3,18 @@ module TestSeriesArray
   using Base.Test
   using DataSeries
   
-    sp1     = SeriesPair(1, 123)
-    sp2     = SeriesPair(3, 789)
-    sp3     = SeriesPair(2, 456)
-    sp4     = SeriesPair(1, 44)
-    sp5     = SeriesPair(3, 55)
-    sp6     = SeriesPair(2, 66)
-    sp7     = SeriesPair(4, 99)
-    sa1     = [sp1, sp2, sp3]
-    sa2     = [sp4, sp5, sp6, sp7]
-    ss      = sort(sa1) # sort and isless
-    arr     = Array(sa1,sa2)
-    arrNaN  = removenan(arr)
+    sp1    = SeriesPair(1, 123)
+    sp2    = SeriesPair(3, 789)
+    sp3    = SeriesPair(2, 456)
+    sp4    = SeriesPair(1, 44)
+    sp5    = SeriesPair(3, 55)
+    sp6    = SeriesPair(2, 66)
+    sp7    = SeriesPair(4, 99)
+    sa1    = [sp1, sp2, sp3]
+    sa2    = [sp4, sp5, sp6, sp7]
+    ss     = sort(sa1) # sort and isless
+    arr    = Array(sa1,sa2)
+    noNaN  = removenan(arr)
   
   # sorting
     @test 456 == sa1[3].value 
@@ -32,7 +32,7 @@ module TestSeriesArray
     @test isnan(arr[4, 1])   == true
 
   # remove rows that have NaN
-#    @test size(arrNaN)       == (3,2)
-#    @test isnan(sum(arrNaN)) == true
+    @test size(noNaN)       == (3,2)
+    @test isnan(sum(noNaN)) == false
 
 end

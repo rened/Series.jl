@@ -52,13 +52,13 @@ end
 #################################
 
 function removenan(x::Array)
-  res= typeof(x[1,1])[]
+  idx= Int[]
     for i in 1:size(x, 1)
       if ~isnan(sum(x[i,:])) # detect row doens't have an NaN
-#        push!(res, x[i])    # keep it
+        push!(idx, i)    # keep it
       end
     end
-  res
+  x[idx,:] 
 end
 
 #################################
