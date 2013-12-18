@@ -1,5 +1,53 @@
 # methods to construct Array{SeriesPair{T,V},1} and operate on it
 
+#################################
+# Array method ##################
+#################################
+
+import Core.Array
+
+function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
+  
+  # create array of index values from args
+  allkey = typeof(args[1][1].index)[]
+  for arg in args
+    for ar in arg
+      push!(allkey, ar.index)
+    end
+  end
+
+  # and sort without duplicates
+  key = sortandremoveduplicates(allkey)
+
+  # match each arg in args with key 
+  arr = fill(NaN, length(key), length(args))
+  for i in 1:length(args)
+    for j = 1:length(args[i])
+       t = args[i][j].index .== key
+       k = key[t]
+       arr[k,i] = args[i][j].value 
+      end
+    end
+    arr
+
+end
+
+
+#################################
+# sortandremoveduplicates #######
+#################################
+
+function sortandremoveduplicates(x::Array)
+  sx = sort(x)
+  res = [sx[1]]
+  for i = 2:length(sx)
+    if sx[i] > sx[i-1]
+    push!(res, sx[i])
+    end
+  end
+  res
+end
+
 
 #################################
 # head, tail, first, last  ######
