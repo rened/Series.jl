@@ -14,7 +14,7 @@ module TestSeriesArray
     sa2     = [sp4, sp5, sp6, sp7]
     ss      = sort(sa1) # sort and isless
     arr     = Array(sa1,sa2)
-    arrNaN  = Array(sa1,sa2, removenan=true)
+    arrNaN  = removenan(arr)
   
   # sorting
     @test 456 == sa1[3].value 

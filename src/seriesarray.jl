@@ -6,7 +6,7 @@
 
 import Core.Array
 
-function Array{T,V}(args::Array{SeriesPair{T,V},1}...; removenan=false) 
+function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
   
   # create array of index values from args
   allkey = typeof(args[1][1].index)[]
@@ -28,11 +28,7 @@ function Array{T,V}(args::Array{SeriesPair{T,V},1}...; removenan=false)
         arr[k,i] = args[i][j].value 
       end
     end
-
-  # remove rows with NaN values?
-  removenan == true?
-  return removenan(arr):
-  return arr
+  arr
 end
 
 
@@ -58,7 +54,7 @@ end
 function removenan(x::Array)
   res= typeof(x[1,1])[]
     for i in 1:size(x, 1)
-      if ~isnan(sum(x[i,:])) # detect row has NaN
+      if ~isnan(sum(x[i,:])) # detect row doens't have an NaN
 #        push!(res, x[i])    # keep it
       end
     end
