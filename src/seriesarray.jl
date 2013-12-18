@@ -6,7 +6,7 @@
 
 import Core.Array
 
-function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
+function Array{T,V}(args::Array{SeriesPair{T,V},1}...; removenan=false) 
   
   # create array of index values from args
   allkey = typeof(args[1][1].index)[]
@@ -21,15 +21,18 @@ function Array{T,V}(args::Array{SeriesPair{T,V},1}...)
 
   # match each arg in args with key 
   arr = fill(NaN, length(key), length(args))
-  for i in 1:length(args)
-    for j = 1:length(args[i])
-       t = args[i][j].index .== key
-       k = key[t]
-       arr[k,i] = args[i][j].value 
+    for i in 1:length(args)
+      for j = 1:length(args[i])
+        t = args[i][j].index .== key
+        k = key[t]
+        arr[k,i] = args[i][j].value 
       end
     end
-    arr
 
+  # remove rows with NaN values?
+  removenan == true?
+  return removenan(arr):
+  return arr
 end
 
 
@@ -48,6 +51,19 @@ function sortandremoveduplicates(x::Array)
   res
 end
 
+#################################
+# removenan #####################
+#################################
+
+function removenan(x::Array)
+  res= typeof(x[1,1])[]
+    for i in 1:size(x, 1)
+      if ~isnan(sum(x[i,:])) # detect row has NaN
+#        push!(res, x[i])    # keep it
+      end
+    end
+  res
+end
 
 #################################
 # head, tail, first, last  ######
