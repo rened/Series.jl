@@ -4,6 +4,7 @@ module DataSeries
          Base.isless
 
   export SeriesPair, 
+         seriesarray, 
          removenan, 
          head, 
          tail,
