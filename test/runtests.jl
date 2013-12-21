@@ -1,16 +1,17 @@
 using Base.Test
 using DataSeries
 
-my_tests = ["seriespair.jl",
-            "io.jl",
-            "arraymethods.jl"]
+tests = ["io.jl",
+         "seriespair.jl",
+         "seriesarray.jl"]
 
 print_with_color(:cyan, "Running tests: ") 
 println("")
 
-for my_test in my_tests
+for test in tests
+    suite = test[1:end-3]
     print_with_color(:magenta, "**   ") 
-    print_with_color(:blue, "$my_test") 
+    print_with_color(:blue, "$suite ") 
     println("")
-    include(my_test)
+    include(test)
 end
