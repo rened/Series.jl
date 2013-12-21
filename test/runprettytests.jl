@@ -10,15 +10,17 @@ function dots(assertions)
   end
 end
 
-#function pretty(file, x)
-function pretty(x)
-  #print_with_color(:yellow, "$file   ")
-  print_with_color(:yellow, "hi:   ")
-  dots(x)
-  println("")
+function chopthree(c)
+  for i in 1:3
+    c = chop(c)
+  end
+  c
 end
 
 for test in tests
     include(test)
-    pretty(testarray)
+    suite = chopthree(test)
+    print_with_color(:yellow, "$suite:   ") 
+    dots(testarray)
+    println("")
 end
