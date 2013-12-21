@@ -2,6 +2,7 @@ using Base.Test
 using DataSeries
 
 my_tests = ["seriespair.jl",
+            "io.jl",
             "arraymethods.jl"]
 
 print_with_color(:cyan, "Running tests: ") 

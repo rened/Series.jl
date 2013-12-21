@@ -1,10 +1,10 @@
-function readseries(filename::String; index=1, idxtype="date")
+function readseries(filename::String; index=1, value=2, indextype="date")
   
   anyarray = readcsv(filename)[2:end, :] # to take out the header
   idx      = anyarray[:, index]
-  val      = anyarray[:, 2]              # just hard coded for now
+  val      = anyarray[:, value]              # just hard coded for now
 
-  if  idxtype == "date" 
+  if  indextype == "date" 
     idxarray = Date{ISOCalendar}[date(i) for i in idx] 
   else
     idxarray = Float64[i for i in idx]     # hard coded for now

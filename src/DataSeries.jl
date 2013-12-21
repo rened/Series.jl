@@ -10,7 +10,8 @@ export SeriesPair,
        readseries, 
        removenan, 
        head, tail, first, last,
-       @dataseries
+       @dataseries, 
+       @prettydataseries
   
 abstract AbstractSeriesPair
 
@@ -55,4 +56,5 @@ end
   include("seriesarray.jl")
   include("io.jl")
   include("../test/testmacro.jl")
+  include("../test/prettytestmacro.jl")
 end
