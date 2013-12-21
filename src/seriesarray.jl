@@ -1,4 +1,16 @@
-# methods to construct Array{SeriesPair{T,V},1} and operate on it
+#################################
+# Series constructor ############
+#################################
+
+function Series{T,V}(idx::Array{T,1}, val::Array{V,1})
+  #res = SeriesPair[]
+  res = SeriesPair{T,V}[]
+  for i = 1:size(idx,1)
+    x = SeriesPair(idx[i], val[i])
+    push!(res, x)
+  end
+  res
+end
 
 #################################
 # Array method ##################
@@ -61,27 +73,6 @@ function removenan(x::Array)
   x[idx,:] 
 end
 
-#################################
-# seriesarray methods ###########
-#################################
-
-# function seriesarray(df::DataFrame, idx::String, val::String)
-#   #code here
-# end
-
-function seriesarray(a::Array, idx::Int, val::Int)
-  #code here
-end
-
-function seriesarray{T,V}(idx::Array{T,1}, val::Array{V,1})
-  #res = SeriesPair[]
-  res = SeriesPair{T,V}[]
-  for i = 1:size(idx,1)
-    x = SeriesPair(idx[i], val[i])
-    push!(res, x)
-  end
-  res
-end
 
 #################################
 # head, tail, first, last  ######
