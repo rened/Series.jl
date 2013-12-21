@@ -2,26 +2,26 @@ module DataSeries
 
 using Datetime
 
-  import Base.show,
-         Base.isless
+import Base.show,
+       Base.isless
 
-  export SeriesPair, 
-         Series, 
-         readseries, 
-         removenan, 
-         head, 
-         tail,
-         first,
-         last,
-         @dataseries
+export SeriesPair, 
+       Series, 
+       readseries, 
+       removenan, 
+       head, tail, first, last,
+       @dataseries, 
+       @prettydataseries
   
 abstract AbstractSeriesPair
 
 immutable SeriesPair{T, V} <: AbstractSeriesPair
   index::T
   value::V
-
+  name::String
 end
+
+SeriesPair{T,V}(x::T,y::V) = SeriesPair{T,V}(x::T,y::V,"value")
 
 #################################
 ###### isless ###################
@@ -40,7 +40,13 @@ end
 
 function show(io::IO, p::SeriesPair)
    #print(io, p.index, "  |  ", join([@sprintf("%.4f",x) for x in p.value]," "))
+   #spc = repeat(" ", length(sprint(showcompact, p.index)) + 2)
+   #println(spc,  p.name)
    print(io, p.index, "  ",  p.value)
+end
+
+function show(io::IO, sa::Array{SeriesPair, 1})
+  print(io, "foo")
 end
 
 #################################
@@ -50,4 +56,5 @@ end
   include("seriesarray.jl")
   include("io.jl")
   include("../test/testmacro.jl")
+  include("../test/prettytestmacro.jl")
 end
