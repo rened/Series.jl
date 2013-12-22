@@ -1,9 +1,10 @@
 using Base.Test
-using DataSeries
+using Series
 
 tests = ["io.jl",
-         "seriespair.jl",
-         "seriesarray.jl"]
+         "array.jl",
+         "seriespair.jl"]
+         
 
 print_with_color(:cyan, "Running tests: ") 
 println("")

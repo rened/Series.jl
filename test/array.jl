@@ -1,7 +1,7 @@
 module TestSeriesArray
   
   using Base.Test
-  using DataSeries
+  using Series
   
     sp1    = SeriesPair(1, 123)
     sp2    = SeriesPair(3, 789)
