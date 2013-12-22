@@ -1,14 +1,4 @@
-macro dataseries()
+macro series()
   println("")
-  reload(Pkg.dir("DataSeries/test/runtests.jl"))
-end
-
-########### time trial wrapper #####################################
-
-function timetrial(f::Function, v::Any, n::Int)
-  p = Float64[]
-  for i in 1:n+1
-    push!(p, @elapsed f(v))
-  end
-  mean(p[2:end]) # toss out the first execution from the average
+  reload(Pkg.dir("Series/test/runtests.jl"))
 end

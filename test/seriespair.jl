@@ -1,7 +1,7 @@
 module TestSeriesPair
 
   using Base.Test
-  using DataSeries
+  using Series
 
   a = SeriesPair(1, 33)
   b = SeriesPair(2, 22)

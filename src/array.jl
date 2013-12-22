@@ -1,8 +1,8 @@
 #################################
-# Series constructor ############
+# SeriesArray constructor #######
 #################################
 
-function Series{T,V}(idx::Array{T,1}, val::Array{V,1})
+function SeriesArray{T,V}(idx::Array{T,1}, val::Array{V,1})
   #res = SeriesPair[]
   res = SeriesPair{T,V}[]
   for i = 1:size(idx,1)
@@ -57,7 +57,7 @@ function sortandremoveduplicates(x::Array)
     end
   end
   res
-end
+eArraynd
 
 #################################
 # removenan #####################

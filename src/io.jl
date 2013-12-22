@@ -12,5 +12,5 @@ function readseries(filename::String; index=1, value=2, indextype="date")
 
   valarray = Float64[v for v in val]
 
-  sort(Series(idxarray, valarray))
+  sort(SeriesArray(idxarray, valarray))
 end

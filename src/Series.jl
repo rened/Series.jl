@@ -1,4 +1,4 @@
-module DataSeries
+module Series
 
 using Datetime
 
@@ -6,12 +6,12 @@ import Base.show,
        Base.isless
 
 export SeriesPair, 
-       Series, 
+       SeriesArray, 
        readseries, 
        removenan, 
        head, tail, first, last,
-       @dataseries, 
-       @prettydataseries
+       @series, 
+       @prettyseries
   
 abstract AbstractSeriesPair
 
@@ -53,8 +53,8 @@ end
 ###### include ##################
 #################################
 
-  include("seriesarray.jl")
+  include("array.jl")
   include("io.jl")
   include("../test/testmacro.jl")
-  include("../test/prettytestmacro.jl")
+  include("../test/pretty/prettytestmacro.jl")
 end
