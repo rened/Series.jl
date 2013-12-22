@@ -57,7 +57,7 @@ function sortandremoveduplicates(x::Array)
     end
   end
   res
-eArraynd
+end
 
 #################################
 # removenan #####################
