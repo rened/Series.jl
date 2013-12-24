@@ -76,36 +76,23 @@ end
 #################################
 # broadcasting ##################
 #################################
-########### 
-########### for op in [:+, :-, :*, :/]
-###########   @eval begin
-########### #    ($op){T,V}(sa1::Array{SeriesPair{T,V},1}, sa2::Array{SeriesPair{T,V},1}) 
-###########     ($op)(sa1::Array{SeriesPair{T,V},1}, sa2::Array{SeriesPair{T,V},1}) 
-########### ########      # first find inner join of indexes
-########### ########      idx = T[]
-########### ########      m   = [m.index for m in sa1]
-########### ########      n   = [n.index for n in sa2]
-########### ########      for i in 1:length(m)
-########### ########        for i in 1:length(n)
-########### ########          if m[i] == n[i]
-########### ########            push!(idx, m[i])
-########### ########          end
-########### ########        end
-########### ########      end
-###########       res = SeriesPair{T,V}[]
-###########       for i in 1:length(sa1)
-###########         for j in 1:length(sa2)
-###########           if sa1[i].index == sa2[j].index 
-###########             val = $op(sa1[i].value,sa2[j].value)
-###########             sp = SeriesPair(sa1[i].index, val) 
-###########             push!(res, sp)
-###########           end
-###########         end
-###########       end
-###########     sort(res)
-###########     end
-###########   end
-########### end
+
+#for (op, broadcaster) in ([:+, :-, :*, :/], [:.+, :.-, :.*, :./])
+#  @eval begin
+#    function ($op){T,V}(sa1::Array{SeriesPair{T,V},1}, sa2::Array{SeriesPair{T,V},1}) 
+############        res = SeriesPair{T,V}[]
+############        for i in 1:length(sa1)
+############          for j in 1:length(sa2)
+############            if ($op)(sa1[i], sa2[j]) != nothing 
+############              push!(res, ($op)(sa1[i], sa2[j]))
+############            end
+############          end
+############        end
+#res = ($op)(($broadcaster)(sa1, sa2))
+#sort(res)
+#    end # function
+#  end # eval
+#end # loop
 
 
 
