@@ -12,9 +12,10 @@ module TestSeriesPair
   @test a.value == 33
 
   # operators
-  @test a + b == 3
-  @test a - b == -1
-  @test a * b == 2
-  @test a / b == .5
+  @test (a + a).value == 66
+  @test (a - a).value == 0
+  @test (a * a).value == 1089
+  @test (a / a).value == 1 
+  @test a / b == nothing
 
 end
