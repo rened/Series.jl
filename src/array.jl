@@ -73,6 +73,22 @@ function removenan(x::Array)
   x[idx,:] 
 end
 
+#################################
+# broadcasting ##################
+#################################
+
+for op in [:.+, :.-, :.*, :./]
+  @eval begin
+      #function ($byfun)(df::DataFrame, t::Int)
+    function ($op){T,V}(sa1::Array{SeriesPair{T,V},1}, sa2::Array{SeriesPair{T,V},1}) 
+      #df[([$calfun(d) for d in df["Date"]]) .== t, :]
+#      SeriesArray([s.index for s in sa1] 
+
+    end
+  end
+end
+
+
 
 #################################
 # head, tail, first, last  ######
