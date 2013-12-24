@@ -7,6 +7,8 @@ import Base.show,
 
 export SeriesPair, 
        SeriesArray, 
+       +, -, *, /, 
+       .+, .-, .*, ./, 
        readseries, 
        removenan, 
        head, tail, first, last,
@@ -47,6 +49,23 @@ end
 
 function show(io::IO, sa::Array{SeriesPair, 1})
   print(io, "foo")
+end
+
+#################################
+###### +, -, *, / ###############
+#################################
+
+for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
+  @eval begin
+    function ($op){T,V}(sp1::SeriesPair{T,V}, sp2::SeriesPair{T,V})
+      matches = false 
+      if sp1.index == sp2.index
+         matches = true
+         res = SeriesPair(sp1.index, ($op)(sp1.value, sp2.value))
+      end
+      matches == true? res: nothing  # nothing is indignity enough rather than an error
+    end
+  end
 end
 
 #################################

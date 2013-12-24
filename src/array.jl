@@ -73,6 +73,28 @@ function removenan(x::Array)
   x[idx,:] 
 end
 
+#################################
+# broadcasting ##################
+#################################
+
+#for (op, broadcaster) in ([:+, :-, :*, :/], [:.+, :.-, :.*, :./])
+#  @eval begin
+#    function ($op){T,V}(sa1::Array{SeriesPair{T,V},1}, sa2::Array{SeriesPair{T,V},1}) 
+############        res = SeriesPair{T,V}[]
+############        for i in 1:length(sa1)
+############          for j in 1:length(sa2)
+############            if ($op)(sa1[i], sa2[j]) != nothing 
+############              push!(res, ($op)(sa1[i], sa2[j]))
+############            end
+############          end
+############        end
+#res = ($op)(($broadcaster)(sa1, sa2))
+#sort(res)
+#    end # function
+#  end # eval
+#end # loop
+
+
 
 #################################
 # head, tail, first, last  ######
