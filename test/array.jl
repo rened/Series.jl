@@ -15,6 +15,10 @@ module TestSeriesArray
     ss     = sort(sa1) # sort and isless
     arr    = Array(sa1,sa2)
     noNaN  = removenan(arr)
+    saadd  = sa1 .+ sa1
+    sasub  = sa1 .- sa1
+    samult = sa1 .* sa1
+    sadiv  = sa1 ./ sa1
   
   # sorting
     @test 456 == sa1[3].value 
@@ -35,4 +39,10 @@ module TestSeriesArray
     @test size(noNaN)       == (3,2)
     @test isnan(sum(noNaN)) == false
 
+  # broacast operator
+    @test saadd[1].value     == 246
+    @test sasub1].value      == 0
+    @test samult[1].value    == 15129
+    @test sadiv[1].value     == 1
+    #@test_throws sa1 .+ sa2 error
 end
