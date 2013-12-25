@@ -106,10 +106,9 @@ tail{T,V}(x::Array{SeriesPair{T,V},1}) = x[2:end]
 #################################
 
 function lag{T,V}(sa::Array{SeriesPair{T,V},1}, n::Int) 
-  displacedval = T[s.value for s in sa][1:length(sa) - 1]
+  displacedval = T[s.value for s in sa][1:length(sa) - n]
   nanarray     = fill(NaN, n)
-#  val          = vcat(nanarray, displacedval)
-  val          = vcat(fill(NaN, n),  T[s.value for s in sa][1:length(sa) - 1])
+  val          = vcat(nanarray, displacedval)
   idx          = V[s.index for s in sa]
   SeriesArray(idx, val)
 end
