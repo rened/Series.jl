@@ -94,18 +94,9 @@ end
 #  end # eval
 #end # loop
 
-
-
 #################################
-# head, tail, first, last  ######
+# head, tail ####################
 #################################
 
-head{T,V}(x::Array{SeriesPair{T,V},1}, n::Int) = x[[1:n]]
-head{T,V}(x::Array{SeriesPair{T,V},1}) = head(x, 3)
-
-first{T,V}(x::Array{SeriesPair{T,V},1}) = head(x, 1)
-
-tail{T,V}(x::Array{SeriesPair{T,V},1}, n::Int) = x[length(x)-n+1:end]
-tail{T,V}(x::Array{SeriesPair{T,V},1}) = tail(x, 3)
-
-last{T,V}(x::Array{SeriesPair{T,V},1}) = tail(x, 1)
+head{T,V}(x::Array{SeriesPair{T,V},1}) = [x[1]]
+tail{T,V}(x::Array{SeriesPair{T,V},1}) = x[2:end]

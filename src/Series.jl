@@ -11,7 +11,7 @@ export SeriesPair,
        .+, .-, .*, ./, 
        readseries, 
        removenan, 
-       head, tail, first, last,
+       head, tail, 
        @series, 
        @prettyseries
   

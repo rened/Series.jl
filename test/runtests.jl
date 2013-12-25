@@ -1,9 +1,9 @@
 using Base.Test
 using Series
 
-tests = ["io.jl",
-         "array.jl",
-         "seriespair.jl"]
+tests = ["array.jl",
+         "io.jl",
+         "series.jl"]
          
 
 print_with_color(:cyan, "Running tests: ") 
