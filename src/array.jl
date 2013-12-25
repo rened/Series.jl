@@ -123,3 +123,21 @@ end
 
 lag{T,V}(sa::Array{SeriesPair{T,V},1}) = lag(sa, 1)
 lead{T,V}(sa::Array{SeriesPair{T,V},1}) = lead(sa, 1)
+
+#################################
+# percentchange #################
+#################################
+
+function percentchange{T,V}(sa::Array{SeriesPair{T,V},1}; method="simple") 
+
+  logval    = vcat(NaN, (T[s.value for s in sa] |> log |> diff))
+  simpleval = vcat(NaN, (T[s.value for s in sa] |> log |> diff |> expm1))
+  idx       = V[s.index for s in sa]
+  if method == "simple" 
+    SeriesArray(idx, simpleval)
+  elseif method == "log" 
+    SeriesArray(idx, logval)
+  else 
+    throw("only simple and log methods supported")
+  end
+end
