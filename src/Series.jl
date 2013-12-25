@@ -12,6 +12,7 @@ export SeriesPair,
        readseries, 
        removenan, 
        head, tail, 
+       lag, lead, 
        @series, 
        @prettyseries
   

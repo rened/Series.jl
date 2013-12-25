@@ -100,3 +100,27 @@ end
 
 head{T,V}(x::Array{SeriesPair{T,V},1}) = [x[1]]
 tail{T,V}(x::Array{SeriesPair{T,V},1}) = x[2:end]
+
+#################################
+# lag, lead #####################
+#################################
+
+function lag{T,V}(sa::Array{SeriesPair{T,V},1}, n::Int) 
+  displacedval = T[s.value for s in sa][1:length(sa) - 1]
+  nanarray     = fill(NaN, n)
+#  val          = vcat(nanarray, displacedval)
+  val          = vcat(fill(NaN, n),  T[s.value for s in sa][1:length(sa) - 1])
+  idx          = V[s.index for s in sa]
+  SeriesArray(idx, val)
+end
+
+function lead{T,V}(sa::Array{SeriesPair{T,V},1}, n::Int) 
+  displacedval = T[s.value for s in sa][n+1:end]
+  nanarray     = fill(NaN, n)
+  val          = vcat(displacedval, nanarray)
+  idx          = V[s.index for s in sa]
+  SeriesArray(idx, val)
+end
+
+lag{T,V}(sa::Array{SeriesPair{T,V},1}) = lag(sa, 1)
+lead{T,V}(sa::Array{SeriesPair{T,V},1}) = lead(sa, 1)
