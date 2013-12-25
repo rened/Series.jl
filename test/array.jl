@@ -58,4 +58,9 @@ module TestSeriesArray
     @test lag(ss)[1].index        == 1
     @test lead(ss)[1].value       == 20.
     @test lead(ss)[1].index       == 1
+
+  # percentchange
+    @test isnan(percentchange(ss)[1].value)      == true
+    @test_approx_eq  percentchange(ss)[2].value 1. 
+    @test_approx_eq percentchange(ss, method="log")[2].value 0.693147180559945 
 end

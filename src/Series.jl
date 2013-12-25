@@ -13,6 +13,7 @@ export SeriesPair,
        removenan, 
        head, tail, 
        lag, lead, 
+       percentchange, 
        @series, 
        @prettyseries
   
