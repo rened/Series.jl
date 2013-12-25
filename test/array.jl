@@ -45,4 +45,9 @@ module TestSeriesArray
     @test sasub[1].value   == 10.
     @test samult[1].value  == 200.
     @test sadiv[1].value   == 2.0
+
+  # heads and tails
+    @test length(head(sa1)) == 1
+    @test length(tail(sa2)) == 2
+    @test head(sa1)[1].value   == 20
 end
