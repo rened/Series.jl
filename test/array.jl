@@ -50,4 +50,12 @@ module TestSeriesArray
     @test length(head(sa1)) == 1
     @test length(tail(sa2)) == 2
     @test head(sa1)[1].value   == 20
+
+  # lag and lead on sorted array (though it would work on unsorted ones too)
+    @test isnan(lag(ss)[1].value) == true
+    @test lag(ss)[2].value        == 10.
+    @test lag(ss, 2)[3].value     == 10. 
+    @test lag(ss)[1].index        == 1
+    @test lead(ss)[1].value       == 20.
+    @test lead(ss)[1].index       == 1
 end
