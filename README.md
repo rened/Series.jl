@@ -33,6 +33,28 @@ columns can be attained by transitioning to an array of SeriesPair values, or to
 ````julia
 julia> using Series
 
+# generic index 
+
+julia> foo = SeriesArray([1:3], 5.*[1:3.])
+3-element Array{SeriesPair{Int64,Float64},1}:
+ 1  5.0
+ 2  10.0
+ 3  15.0
+
+julia> bar = SeriesArray([1:3], 10.*[1:3.])
+3-element Array{SeriesPair{Int64,Float64},1}:
+ 1  10.0
+ 2  20.0
+ 3  30.0
+
+julia> Array(foo, bar)
+3x2 Array{Float64,2}:
+  5.0  10.0
+ 10.0  20.0
+ 15.0  30.0
+
+# using Datetime object as index
+
 julia> op = readseries(Pkg.dir("Series/test/data/spx.csv"));
 
 julia> cl = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5);
@@ -40,6 +62,10 @@ julia> cl = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5);
 julia> cl ./ op |> head
 1-element Array{SeriesPair{Date{ISOCalendar},Float64},1}:
  1970-01-02  1.0102107321312188
+
+julia> op |> percentchange |> removenan |> head
+1-element Array{SeriesPair{Date{ISOCalendar},Float64},1}:
+ 1970-01-05  0.010210732131218946
 
 julia> lag(cl)[1:2]
 2-element Array{SeriesPair{Date{ISOCalendar},Float64},1}:
