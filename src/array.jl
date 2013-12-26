@@ -154,6 +154,16 @@ end
 # upto ##########################
 #################################
 
+function upto{T,V}(sa::Array{SeriesPair{T,V},1}, f::Function) 
+
+  idx = T[s.index for s in sa]
+  val = V[]
+  for i=1:length(sa)
+    push!(val, f([s.value for s in sa][1:i])) 
+  end
+  SeriesArray(idx, val)
+end
+
 #################################
 # bydate ########################
 #################################

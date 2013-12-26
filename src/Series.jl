@@ -14,7 +14,9 @@ export SeriesPair,
        head, tail, 
        lag, lead, 
        percentchange, 
-       moving, 
+       moving, upto,  
+       #byyear, bymonth, byday, bydow, bydoy
+       #from, to, collapse, 
        @series, 
        @prettyseries
   

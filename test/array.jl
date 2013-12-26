@@ -11,6 +11,7 @@ module TestSeriesArray
     opnan  = lag(op)
     opno   = removenan(opnan)
     meanop = moving(op, mean, 10)
+    uptoop = upto(op, sum)
 
     arr    = Array(op, cl[2:end])
     nonan  = removenan(arr)
@@ -70,4 +71,12 @@ module TestSeriesArray
   # moving
    @test isnan(meanop[9].value) == true
    @test_approx_eq meanop[10].value 92.43199999999999
+
+  # upto
+   @test uptoop[4].value == 371.34
+
+  # bydate
+
+  # from, to, collapse
+
 end
