@@ -179,3 +179,52 @@ end
 #################################
 # from, to, collapse ############
 #################################
+
+for(op, func) = ((:from, :>=), 
+                  (:to, :<=))
+  @eval begin
+    function ($op){T,V}(sa::Array{SeriesPair{T,V},1}, y::Int, m::Int, d::Int)
+       res = SeriesPair{T,V}[]
+       for i in 1:length(sa)
+         if ($func)(sa[i].index, date(y, m, d))
+           push!(res, sa[i])
+         end
+       end
+       res
+     end # function
+  end # eval
+end # loop
+
+function collapse{T,V}(sa::Array{SeriesPair{T,V},1}, f::Function; period=week)
+# 
+#   w =  [period(sa[i, "Date"]) for i = 1:size(sa, 1)]   # needs regex to get other names for Date
+#   z = Int[] ; j = 1
+#   for i=1:size(sa, 1) - 1 # create unique period ID array
+#     if w[i] < w[i+1]
+#       push!(z, j)
+#       j = j+1
+#     else
+#       push!(z,j)
+#     end         
+#   end
+# 
+#   # account for last row
+#   w[size(sa, 1)]  ==  w[size(sa, 1)-1] ? # is the last row the same period as 2nd to last row?
+#   push!(z, z[length(z)]) :  
+#   push!(z, z[length(z)] + 1)  
+# 
+#   sa["pd"] = z # attach unique period ID to each row
+# 
+#   newsa    = Array{SeriesPair{T,V},1}()
+# 
+#   for i = 1:z[length(z)]  # iterate over period ID groupings
+#     temp = select(:(pd .== $i), sa) # SubArray{SeriesPair{T,V},1} object
+#     nextrow = Array{SeriesPair{T,V},1}()
+#     for (k,v) in args
+#       nextrow[k] = v(temp[k]) # shouldnt refactor while its broke but this is cleaner
+#     end
+#     newsa = rbind(newsa, nextrow)  
+#   end
+#   newsa
+end
+

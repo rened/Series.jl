@@ -4,30 +4,16 @@ module TestSeriesArray
   using Series
   using Datetime
   
-    op     = readseries(Pkg.dir("Series/test/data/spx.csv"))
-    cl     = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
-    po     = flipud(op)
-    poop   = sort(op)
-    opnan  = lag(op)
-    opno   = removenan(opnan)
-    meanop = moving(op, mean, 10)
-    uptoop = upto(op, sum)
-    yrop   = byyear(op, 1970) #1970s
-    mthop  = bymonth(op, 2) # Februarys
-    dayop  = byday(op, 2) # where the day is #2
-    dowop  = bydow(op, 5) # fifth day of week or Fridays
-    doyop  = bydoy(op, 4) # fourth day of year
-
-    arr    = Array(op, cl[2:end])
-    nonan  = removenan(arr)
-    saadd  = op .+ cl
-    sasub  = op .- cl
-    samult = op .* cl
-    sadiv  = op ./ cl
+  # arrays with Datetime index
+    op       = readseries(Pkg.dir("Series/test/data/spx.csv"))
+    cl       = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
   
   # sorting
-    @test poop[1].value == 92.06             
-    @test poop[1].index == date(1970, 1, 2)  
+    po       = flipud(op)
+    sopo     = sort(op)
+
+    @test sopo[1].value == 92.06             
+    @test sopo[1].index == date(1970, 1, 2)  
   
   # indexing
     @test op[1].index       == date(1970, 1, 2) 
@@ -35,12 +21,18 @@ module TestSeriesArray
     @test length(op[2:end]) == 506  # endof and length
 
   # construct Array of values
+    arr    = Array(op, cl[2:end])
+
     @test size(arr)         == (507,2)
     @test sum(arr[2:end,2]) == 45901.85
     @test typeof(arr)       == Array{Float64, 2}
     @test isnan(arr[1,2])   == true
 
   # remove rows that have NaN
+    nonan  = removenan(arr)
+    opnan  = lag(op)
+    opno   = removenan(opnan)
+
     @test size(nonan)       == (506,2)
     @test isnan(sum(nonan)) == false
     @test length(opno)     == 506
@@ -50,6 +42,11 @@ module TestSeriesArray
   # CAUTION: sorting NOT enforced
   # TODO: enforce sorting
   
+    saadd  = op .+ cl
+    sasub  = op .- cl
+    samult = op .* cl
+    sadiv  = op ./ cl
+
     @test saadd[1].value   == 185.06
     @test_approx_eq sasub[1].value -0.9399999999999977   
     @test_approx_eq samult[1].value 8561.58  
@@ -73,14 +70,20 @@ module TestSeriesArray
     @test_approx_eq  percentchange(op)[2].value 0.010210732131218946
     @test_approx_eq percentchange(op, method="log")[2].value 0.010158954764160733
 
-  # moving
-   @test isnan(meanop[9].value) == true
-   @test_approx_eq meanop[10].value 92.43199999999999
+  # moving, upto  
+    meanop   = moving(op, mean, 10)
+    uptoop   = upto(op, sum)
 
-  # upto
-   @test uptoop[4].value == 371.34
+    @test isnan(meanop[9].value) == true
+    @test_approx_eq meanop[10].value 92.43199999999999
+    @test uptoop[4].value == 371.34
 
   # bydate
+    yrop  = byyear(op, 1970) #1970s
+    mthop = bymonth(op, 2) # Februarys
+    dayop = byday(op, 2) # where the day is #2
+    dowop = bydow(op, 5) # fifth day of week or Fridays
+    doyop = bydoy(op, 4) # fourth day of year
 
     @test yrop[length(yrop)].index   == date(1970,12,31) # 1970s
     @test mthop[length(mthop)].index == date(1971,2,26)  # Februarys
@@ -89,5 +92,13 @@ module TestSeriesArray
     @test doyop[length(doyop)].index == date(1971,1,4)   # fourth day of year
 
   # from, to, collapse
+    opto     = to(op,1970,12,31) # includes row in series
+    opfrom   = from(op,1971,1,4) # includes row in series
+    opweekly = collapse(op, first)
+    clmnthly = collapse(cl, last, period=month)
 
+    @test opto[length(opto)].index == date(1970, 12, 31) 
+    @test opfrom[1].index          == date(1971, 1, 4) 
+    @test opweekly[2].value        == 93.00
+    @test clmnthly[1].value        == 85.02               
 end
