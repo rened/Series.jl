@@ -12,6 +12,11 @@ module TestSeriesArray
     opno   = removenan(opnan)
     meanop = moving(op, mean, 10)
     uptoop = upto(op, sum)
+    yrop   = byyear(op, 1970) #1970s
+    mthop  = bymonth(op, 2) # Februarys
+    dayop  = byday(op, 2) # where the day is #2
+    dowop  = bydow(op, 5) # fifth day of week or Fridays
+    doyop  = bydoy(op, 4) # fourth day of year
 
     arr    = Array(op, cl[2:end])
     nonan  = removenan(arr)
@@ -76,6 +81,12 @@ module TestSeriesArray
    @test uptoop[4].value == 371.34
 
   # bydate
+
+    @test yrop[length(yrop)].index   == date(1970,12,31) # 1970s
+    @test mthop[length(mthop)].index == date(1971,2,26)  # Februarys
+    @test dayop[length(dayop)].index == date(1971,12,2)  # day # is 2
+    @test dowop[length(dowop)].index == date(1971,12,31) # Fridays
+    @test doyop[length(doyop)].index == date(1971,1,4)   # fourth day of year
 
   # from, to, collapse
 
