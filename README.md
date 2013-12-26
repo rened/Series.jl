@@ -41,15 +41,21 @@ julia> foo = SeriesArray([1:3], 5.*[1:3.])
  2  10.0
  3  15.0
 
-julia> bar = SeriesArray([1:3], 10.*[1:3.])
+julia> bar = SeriesArray([2:4], 10.*[2:4.])
 3-element Array{SeriesPair{Int64,Float64},1}:
- 1  10.0
  2  20.0
  3  30.0
+ 4  40.0
 
 julia> Array(foo, bar)
-3x2 Array{Float64,2}:
-  5.0  10.0
+4x2 Array{Float64,2}:
+   5.0  NaN
+  10.0   20.0
+  15.0   30.0
+ NaN     40.0
+
+julia> ans |> removenan
+2x2 Array{Float64,2}:
  10.0  20.0
  15.0  30.0
 
