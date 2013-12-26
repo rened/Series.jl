@@ -168,6 +168,14 @@ end
 # bydate ########################
 #################################
 
+for (byfun,calfun) = ((:byyear,:year), (:bymonth,:month), (:byday,:day), (:bydow,:dayofweek), (:bydoy,:dayofyear))
+                      # (:byhour,:hour), (:byminute,:minute), (:bysecond,:second)
+    @eval begin
+        function ($byfun){T,V}(sa::Array{SeriesPair{T,V},1}, t::Int) 
+            sa[[$calfun(d) for d in [s.index for s in sa]] .== t]
+        end
+    end
+end
 #################################
 # from, to, collapse ############
 #################################
