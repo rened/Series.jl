@@ -3,7 +3,6 @@
 #################################
 
 function SeriesArray{T,V}(idx::Array{T,1}, val::Array{V,1})
-  #res = SeriesPair[]
   res = SeriesPair{T,V}[]
   for i = 1:size(idx,1)
     x = SeriesPair(idx[i], val[i])
@@ -21,7 +20,8 @@ import Core.Array
 function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
   
   # create array of index values from args
-  allkey = typeof(args[1][1].index)[]
+  #allkey = typeof(args[1][1].index)[]
+  allkey = T[]
   for arg in args
     for ar in arg
       push!(allkey, ar.index)
@@ -77,22 +77,6 @@ end
 # broadcasting ##################
 #################################
 
-#for (op, broadcaster) in ([:+, :-, :*, :/], [:.+, :.-, :.*, :./])
-#  @eval begin
-#    function ($op){T,V}(sa1::Array{SeriesPair{T,V},1}, sa2::Array{SeriesPair{T,V},1}) 
-############        res = SeriesPair{T,V}[]
-############        for i in 1:length(sa1)
-############          for j in 1:length(sa2)
-############            if ($op)(sa1[i], sa2[j]) != nothing 
-############              push!(res, ($op)(sa1[i], sa2[j]))
-############            end
-############          end
-############        end
-#res = ($op)(($broadcaster)(sa1, sa2))
-#sort(res)
-#    end # function
-#  end # eval
-#end # loop
 
 #################################
 # head, tail ####################
@@ -106,18 +90,18 @@ tail{T,V}(x::Array{SeriesPair{T,V},1}) = x[2:end]
 #################################
 
 function lag{T,V}(sa::Array{SeriesPair{T,V},1}, n::Int) 
-  displacedval = T[s.value for s in sa][1:length(sa) - n]
+  idx          = T[s.index for s in sa]
+  displacedval = V[s.value for s in sa][1:length(sa) - n]
   nanarray     = fill(NaN, n)
   val          = vcat(nanarray, displacedval)
-  idx          = V[s.index for s in sa]
   SeriesArray(idx, val)
 end
 
 function lead{T,V}(sa::Array{SeriesPair{T,V},1}, n::Int) 
-  displacedval = T[s.value for s in sa][n+1:end]
+  idx          = T[s.index for s in sa]
+  displacedval = V[s.value for s in sa][n+1:end]
   nanarray     = fill(NaN, n)
   val          = vcat(displacedval, nanarray)
-  idx          = V[s.index for s in sa]
   SeriesArray(idx, val)
 end
 
@@ -130,9 +114,9 @@ lead{T,V}(sa::Array{SeriesPair{T,V},1}) = lead(sa, 1)
 
 function percentchange{T,V}(sa::Array{SeriesPair{T,V},1}; method="simple") 
 
-  logval    = vcat(NaN, (T[s.value for s in sa] |> log |> diff))
-  simpleval = vcat(NaN, (T[s.value for s in sa] |> log |> diff |> expm1))
-  idx       = V[s.index for s in sa]
+  logval    = vcat(NaN, (V[s.value for s in sa] |> log |> diff))
+  simpleval = vcat(NaN, (V[s.value for s in sa] |> log |> diff |> expm1))
+  idx       = T[s.index for s in sa]
   if method == "simple" 
     SeriesArray(idx, simpleval)
   elseif method == "log" 

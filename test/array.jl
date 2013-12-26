@@ -2,65 +2,64 @@ module TestSeriesArray
   
   using Base.Test
   using Series
+  using Datetime
   
-    sa1, sa2 = SeriesPair{Int, Float64}[],  SeriesPair{Int, Float64}[]
-    for ind in [2,1,3]
-      push!(sa1, SeriesPair(ind, float(10ind)))
-      push!(sa2, SeriesPair(ind, float(5ind)))
-    end
-    sa3 = [sa2, SeriesPair(4, 99.)]
+    op   = readseries(Pkg.dir("Series/test/data/spx.csv"))
+    cl   = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
+    po   = flipud(op)
+    poop = sort(op)
 
-    ss     = sort(sa1) # sort and isless
-    arr    = Array(sa1,sa3)
-    noNaN  = removenan(arr)
-    saadd  = sa1 .+ sa2
-    sasub  = sa1 .- sa2
-    samult = sa1 .* sa2
-    sadiv  = sa1 ./ sa2
+
+#    arr    = Array(op, cl)
+#    noNaN  = removenan(arr)
+    saadd  = op .+ cl
+    sasub  = op .- cl
+    samult = op .* cl
+    sadiv  = op ./ cl
   
   # sorting
-    @test 20  == sa1[1].value 
-    @test 10  == ss[1].value 
+    @test poop[1].value == 92.06             
+    @test poop[1].index == date(1970, 1, 2)  
   
   # indexing
-    @test sa1[1].index       == 2 # getindex
-    @test sa1[1].value       == 20
-    @test length(sa1[2:end]) == 2 # endof and length
+    @test op[1].index       == date(1970, 1, 2) 
+    @test op[1].value       == 92.06
+    @test length(op[2:end]) == 506  # endof and length
 
   # construct Array of values
-    @test size(arr)          == (4,2)
-    @test sum(arr[2:end, 2]) == 124.0
-    @test typeof(arr)        == Array{Float64, 2}
-    @test isnan(arr[4, 1])   == true
-
-  # remove rows that have NaN
-    @test size(noNaN)       == (3,2)
-    @test isnan(sum(noNaN)) == false
+#    @test size(arr)          == (4,2)
+#    @test sum(arr[2:end, 2]) == 124.0
+#    @test typeof(arr)        == Array{Float64, 2}
+#    @test isnan(arr[4, 1])   == true
+#
+#  # remove rows that have NaN
+#    @test size(noNaN)       == (3,2)
+#    @test isnan(sum(noNaN)) == false
 
   # broacast operator 
   # CAUTION: sorting NOT enforced
   # TODO: enforce sorting
   
-    @test saadd[1].value   == 30.
-    @test sasub[1].value   == 10.
-    @test samult[1].value  == 200.
-    @test sadiv[1].value   == 2.0
+    @test saadd[1].value   == 185.06
+    @test_approx_eq sasub[1].value -0.9399999999999977   
+    @test_approx_eq samult[1].value 8561.58  
+    @test_approx_eq sadiv[1].value 0.9898924731182795
 
   # heads and tails
-    @test length(head(sa1)) == 1
-    @test length(tail(sa2)) == 2
-    @test head(sa1)[1].value   == 20
+    @test length(head(op))  == 1
+    @test length(tail(op)) == 506
+    @test head(op)[1].value == 92.06
 
   # lag and lead on sorted array (though it would work on unsorted ones too)
-    @test isnan(lag(ss)[1].value) == true
-    @test lag(ss)[2].value        == 10.
-    @test lag(ss, 2)[3].value     == 10. 
-    @test lag(ss)[1].index        == 1
-    @test lead(ss)[1].value       == 20.
-    @test lead(ss)[1].index       == 1
+    @test isnan(lag(op)[1].value) == true
+    @test lag(op)[2].value        == 92.06
+    @test lag(op,2)[3].value      == 92.06
+    @test lag(op)[1].index        == date(1970, 1, 2)
+    @test lead(op)[1].value       == 93.0
+    @test lead(op)[1].index       == date(1970, 1, 2)
 
   # percentchange
-    @test isnan(percentchange(ss)[1].value)      == true
-    @test_approx_eq  percentchange(ss)[2].value 1. 
-    @test_approx_eq percentchange(ss, method="log")[2].value 0.693147180559945 
+    @test isnan(percentchange(op)[1].value)      == true
+    @test_approx_eq  percentchange(op)[2].value 0.010210732131218946
+    @test_approx_eq percentchange(op, method="log")[2].value 0.010158954764160733
 end
