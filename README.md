@@ -33,24 +33,16 @@ columns can be attained by transitioning to an array of SeriesPair values, or to
 ````julia
 julia> using Series
 
-julia> foo = SeriesPair(1, 10); bar = SeriesPair(12, 15); baz = SeriesPair(4, 459);
+julia> op = readseries(Pkg.dir("Series/test/data/spx.csv"));
 
-julia> sa  = [foo, bar, baz]
- 1  10
- 12  15
- 4  459
+julia> cl = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5);
 
-julia> sa[1]
-1  10
+julia> cl ./ op |> head
+1-element Array{SeriesPair{Date{ISOCalendar},Float64},1}:
+ 1970-01-02  1.0102107321312188
 
-julia> sa[2:end]
-2-element Array{SeriesPair{Int64,Int64},1}:
- 12  15
- 4  459
-
-julia> sort(sa)
-1  10
-4  459
-12  15
-
+julia> lag(cl)[1:2]
+2-element Array{SeriesPair{Date{ISOCalendar},Float64},1}:
+ 1970-01-02  NaN
+ 1970-01-05  93.0
 ````
