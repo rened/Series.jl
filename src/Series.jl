@@ -43,14 +43,7 @@ end
 #################################
 
 function show(io::IO, p::SeriesPair)
-   #print(io, p.index, "  |  ", join([@sprintf("%.4f",x) for x in p.value]," "))
-   #spc = repeat(" ", length(sprint(showcompact, p.index)) + 2)
-   #println(spc,  p.name)
    print(io, p.index, "  ",  p.value)
-end
-
-function show(io::IO, sa::Array{SeriesPair, 1})
-  print(io, "foo")
 end
 
 #################################
