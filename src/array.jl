@@ -72,6 +72,16 @@ function removenan(x::Array)
   x[idx,:] 
 end
 
+function removenan{T,V}(sa::Array{SeriesPair{T,V},1})
+  s = SeriesPair[] # there is no method isnan for Float64 oddly, so this trick is in place
+    for i in 1:length(sa)
+      if ~isnan(sa[i].value) # detect row doens't have an NaN
+        push!(s, sa[i])    # keep it
+      end
+    end
+  SeriesArray(T[t.index for t in s], V[v.value for v in s])  # make the types explicit
+end
+
 #################################
 # broadcasting ##################
 #################################

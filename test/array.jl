@@ -4,14 +4,16 @@ module TestSeriesArray
   using Series
   using Datetime
   
-    op   = readseries(Pkg.dir("Series/test/data/spx.csv"))
-    cl   = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
-    po   = flipud(op)
-    poop = sort(op)
+    op    = readseries(Pkg.dir("Series/test/data/spx.csv"))
+    cl    = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
+    po    = flipud(op)
+    poop  = sort(op)
+    opnan = lag(op)
+    opno  = removenan(opnan)
 
 
     arr    = Array(op, cl[2:end])
-    noNaN  = removenan(arr)
+    nonan  = removenan(arr)
     saadd  = op .+ cl
     sasub  = op .- cl
     samult = op .* cl
@@ -33,8 +35,10 @@ module TestSeriesArray
     @test isnan(arr[1,2])   == true
 
   # remove rows that have NaN
-    @test size(noNaN)       == (506,2)
-    @test isnan(sum(noNaN)) == false
+    @test size(nonan)       == (506,2)
+    @test isnan(sum(nonan)) == false
+    @test length(opno)     == 506
+    @test isnan(sum([v.value for v in opno])) == false
 
   # broacast operator 
   # CAUTION: sorting NOT enforced
@@ -45,7 +49,7 @@ module TestSeriesArray
     @test_approx_eq samult[1].value 8561.58  
     @test_approx_eq sadiv[1].value 0.9898924731182795
 
-  # heads and tails
+  # head and tail
     @test length(head(op))  == 1
     @test length(tail(op)) == 506
     @test head(op)[1].value == 92.06
