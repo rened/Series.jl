@@ -101,4 +101,5 @@ module TestSeriesArray
     @test opfrom[1].index          == date(1971, 1, 4) 
     @test opweekly[2].value        == 93.00
     @test clmnthly[1].value        == 85.02               
+    @test length(clmnthly)         == 24             
 end
