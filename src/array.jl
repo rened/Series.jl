@@ -197,30 +197,35 @@ end # loop
 
 function collapse{T,V}(sa::Array{SeriesPair{T,V},1}, f::Function; period=week)
   
-   w = [period(s.index) for s in sa] # get weekly id from entire array
-   z = Int[] ; j = 1
-   for i=1:length(sa) - 1 # create unique period ID array
-     if w[i] < w[i+1]
-       push!(z, j)
-       j += 1
-     else
-       push!(z,j)
-     end         
-   end
+  w = [period(s.index) for s in sa] # get weekly id from entire array
+  z = Int[] ; j = 1
+  for i=1:length(sa) - 1 # create unique period ID array
+    if w[i] != w[i+1]
+      push!(z, j)
+      j = j+1
+    else
+      push!(z,j)
+    end         
+  end
   
-   # account for last row
-   w[length(sa)]  ==  w[length(sa)-1] ? # is the last row the same period as 2nd to last row?
-   push!(z, z[length(z)]) :  
-   push!(z, z[length(z)] + 1)  
+  # account for last row
+  w[length(sa)]  ==  w[length(sa)-1] ? # is the last row the same period as 2nd to last row?
+  push!(z, z[length(z)]) :  
+  push!(z, z[length(z)] + 1)  
  
-   res = SeriesPair{T,V}[]
+  res = SeriesPair{T,V}[]
  
-   for i = 1:maximum(z)-1  # iterate over period ID groupings
-     temp      = sa[findfirst(z .== i):findfirst(z .== i+1)-1]
-     tempindex = temp[length(temp)].index
-     tempvalue = f([t.value for t in temp])
-     push!(res, SeriesPair(tempindex, tempvalue))
-   end
-   res
-end
+  for i = 1:maximum(z)-1  # iterate over period ID groupings
+    temp      = sa[findfirst(z .== i):findfirst(z .== i+1)-1]
+    tempindex = temp[length(temp)].index
+    tempvalue = f([t.value for t in temp])
+    push!(res, SeriesPair(tempindex, tempvalue))
+  end
+  # and once again account for the last temp that isn't looped on above
+  lasttemp = sa[findfirst(z .== maximum(z)):end]
+  lasttempindex = lasttemp[length(lasttemp)].index
+  lasttempvalue = f([t.value for t in lasttemp])
+  push!(res, SeriesPair(lasttempindex, lasttempvalue))
 
+  res
+end
