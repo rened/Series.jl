@@ -10,8 +10,8 @@ module TestSeriesArray
     poop = sort(op)
 
 
-#    arr    = Array(op, cl)
-#    noNaN  = removenan(arr)
+    arr    = Array(op, cl[2:end])
+    noNaN  = removenan(arr)
     saadd  = op .+ cl
     sasub  = op .- cl
     samult = op .* cl
@@ -27,14 +27,14 @@ module TestSeriesArray
     @test length(op[2:end]) == 506  # endof and length
 
   # construct Array of values
-#    @test size(arr)          == (4,2)
-#    @test sum(arr[2:end, 2]) == 124.0
-#    @test typeof(arr)        == Array{Float64, 2}
-#    @test isnan(arr[4, 1])   == true
-#
-#  # remove rows that have NaN
-#    @test size(noNaN)       == (3,2)
-#    @test isnan(sum(noNaN)) == false
+    @test size(arr)         == (507,2)
+    @test sum(arr[2:end,2]) == 45901.85
+    @test typeof(arr)       == Array{Float64, 2}
+    @test isnan(arr[1,2])   == true
+
+  # remove rows that have NaN
+    @test size(noNaN)       == (506,2)
+    @test isnan(sum(noNaN)) == false
 
   # broacast operator 
   # CAUTION: sorting NOT enforced

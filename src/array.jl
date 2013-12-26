@@ -20,7 +20,6 @@ import Core.Array
 function Array{T,V}(args::Array{SeriesPair{T,V},1}...) 
   
   # create array of index values from args
-  #allkey = typeof(args[1][1].index)[]
   allkey = T[]
   for arg in args
     for ar in arg
@@ -36,7 +35,7 @@ function Array{T,V}(args::Array{SeriesPair{T,V},1}...)
     for i in 1:length(args)
       for j = 1:length(args[i])
         t = args[i][j].index .== key
-        k = key[t]
+        k = findfirst(t)
         arr[k,i] = args[i][j].value 
       end
     end
