@@ -42,7 +42,6 @@ function Array{T,V}(args::Array{SeriesPair{T,V},1}...)
   arr
 end
 
-
 #################################
 # sortandremoveduplicates #######
 #################################
@@ -134,3 +133,31 @@ function percentchange{T,V}(sa::Array{SeriesPair{T,V},1}; method="simple")
     throw("only simple and log methods supported")
   end
 end
+
+#################################
+# moving ########################
+#################################
+
+function moving{T,V}(sa::Array{SeriesPair{T,V},1}, f::Function, window::Int) 
+
+  idx      = T[s.index for s in sa]
+  nanarray = fill(NaN, window-1)
+  valarray = V[]
+  for i=1:length(sa)-(window-1)
+    push!(valarray, f([s.value for s in sa][i:i+(window-1)])) 
+  end
+  val = vcat(nanarray, valarray)
+  SeriesArray(idx, val)
+end
+
+#################################
+# upto ##########################
+#################################
+
+#################################
+# bydate ########################
+#################################
+
+#################################
+# from, to, collapse ############
+#################################

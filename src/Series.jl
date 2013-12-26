@@ -14,6 +14,7 @@ export SeriesPair,
        head, tail, 
        lag, lead, 
        percentchange, 
+       moving, 
        @series, 
        @prettyseries
   

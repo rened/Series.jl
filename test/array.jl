@@ -4,13 +4,13 @@ module TestSeriesArray
   using Series
   using Datetime
   
-    op    = readseries(Pkg.dir("Series/test/data/spx.csv"))
-    cl    = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
-    po    = flipud(op)
-    poop  = sort(op)
-    opnan = lag(op)
-    opno  = removenan(opnan)
-
+    op     = readseries(Pkg.dir("Series/test/data/spx.csv"))
+    cl     = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
+    po     = flipud(op)
+    poop   = sort(op)
+    opnan  = lag(op)
+    opno   = removenan(opnan)
+    meanop = moving(op, mean, 10)
 
     arr    = Array(op, cl[2:end])
     nonan  = removenan(arr)
@@ -66,4 +66,8 @@ module TestSeriesArray
     @test isnan(percentchange(op)[1].value)      == true
     @test_approx_eq  percentchange(op)[2].value 0.010210732131218946
     @test_approx_eq percentchange(op, method="log")[2].value 0.010158954764160733
+
+  # moving
+   @test isnan(meanop[9].value) == true
+   @test_approx_eq meanop[10].value 92.43199999999999
 end
