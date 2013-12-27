@@ -11,6 +11,15 @@ function SeriesArray{T,V}(idx::Array{T,1}, val::Array{V,1})
   res
 end
 
+function SeriesArray{T}(idx::Array{T,1}, val::BitArray{1})
+  res = SeriesPair{T,Bool}[]
+  for i = 1:length(idx)
+    x = SeriesPair(idx[i], val[i])
+    push!(res, x)
+  end
+  res
+end
+
 #################################
 # Array method ##################
 #################################

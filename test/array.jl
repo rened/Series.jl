@@ -5,9 +5,15 @@ module TestSeriesArray
   using Datetime
   
   # arrays with Datetime index
-    op       = readseries(Pkg.dir("Series/test/data/spx.csv"))
-    cl       = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
+    op = readseries(Pkg.dir("Series/test/data/spx.csv"))
+    cl = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
   
+  # arrays with boolean values
+    ba = SeriesArray([1:3], trues(3))
+
+  # build with BitArray
+    @test sum(value(ba)) == 3
+
   # sorting
     po       = flipud(op)
     sopo     = sort(op)
