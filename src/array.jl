@@ -94,6 +94,13 @@ head{T,V}(x::Array{SeriesPair{T,V},1}) = [x[1]]
 tail{T,V}(x::Array{SeriesPair{T,V},1}) = x[2:end]
 
 #################################
+# head, tail ####################
+#################################
+
+index{T,V}(sa::Array{SeriesPair{T,V},1}) = T[s.index for s in sa]
+value{T,V}(sa::Array{SeriesPair{T,V},1}) = V[s.value for s in sa]
+
+#################################
 # lag, lead #####################
 #################################
 
