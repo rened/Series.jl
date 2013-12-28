@@ -2,23 +2,26 @@
 # SeriesArray constructor #######
 #################################
 
-function SeriesArray{T,V}(idx::Array{T,1}, val::Array{V,1})
+function SeriesArray{T,V}(idx::Array{T,1}, val::Array{V,1}, nm::String)
   res = SeriesPair{T,V}[]
   for i = 1:size(idx,1)
-    x = SeriesPair(idx[i], val[i])
+    x = SeriesPair(idx[i], val[i], nm)
     push!(res, x)
   end
   res
 end
 
-function SeriesArray{T}(idx::Array{T,1}, val::BitArray{1})
+function SeriesArray{T}(idx::Array{T,1}, val::BitArray{1}, nm::String)
   res = SeriesPair{T,Bool}[]
   for i = 1:length(idx)
-    x = SeriesPair(idx[i], val[i])
+    x = SeriesPair(idx[i], val[i], nm)
     push!(res, x)
   end
   res
 end
+
+SeriesArray{T,V}(idx::Array{T,1}, val::Array{V,1}) = SeriesArray(idx, val, "value") 
+SeriesArray{T}(idx::Array{T,1}, val::BitArray{1}) = SeriesArray(idx, val, "value") 
 
 #################################
 # Array method ##################
@@ -103,11 +106,12 @@ head{T,V}(x::Array{SeriesPair{T,V},1}) = [x[1]]
 tail{T,V}(x::Array{SeriesPair{T,V},1}) = x[2:end]
 
 #################################
-# head, tail ####################
+# index, value, name ############
 #################################
 
 index{T,V}(sa::Array{SeriesPair{T,V},1}) = T[s.index for s in sa]
 value{T,V}(sa::Array{SeriesPair{T,V},1}) = V[s.value for s in sa]
+name{T,V}(sa::Array{SeriesPair{T,V},1})  = String[s.name for s in sa]
 
 #################################
 # lag, lead #####################
