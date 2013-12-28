@@ -11,8 +11,14 @@ module TestSeriesArray
   # arrays with boolean values
     ba = SeriesArray([1:3], trues(3))
 
-  # build with BitArray
     @test sum(value(ba)) == 3
+
+  # arrays with names
+    na = SeriesArray([1:3], [2:4], "test")
+ 
+    @test na[1].name == "test"
+    @test na[2].name == "test"
+    @test na[3].name == "test"
 
   # sorting
     po       = flipud(op)
@@ -63,9 +69,10 @@ module TestSeriesArray
     @test length(tail(op)) == 506
     @test head(op)[1].value == 92.06
 
-  # index and value
+  # index and value and name
     @test value(op)[1] == 92.06
     @test index(op)[1] == date(1970,1,2)
+    @test name(na)[1] == name(na)[2] == name(na)[3]
 
   # lag and lead on sorted array (though it would work on unsorted ones too)
     @test isnan(lag(op)[1].value) == true
