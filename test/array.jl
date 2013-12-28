@@ -69,11 +69,6 @@ module TestSeriesArray
     @test length(tail(op)) == 506
     @test head(op)[1].value == 92.06
 
-  # index and value and name
-    @test value(op)[1] == 92.06
-    @test index(op)[1] == date(1970,1,2)
-    @test name(na)[1] == name(na)[2] == name(na)[3]
-
   # lag and lead on sorted array (though it would work on unsorted ones too)
     @test isnan(lag(op)[1].value) == true
     @test lag(op)[2].value        == 92.06

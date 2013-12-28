@@ -12,7 +12,7 @@ export SeriesPair,
        readseries, 
        removenan, 
        head, tail, 
-       index, value, name, 
+       index, value, name, istrue,
        lag, lead, 
        percentchange, 
        moving, upto,  
@@ -73,6 +73,7 @@ end
 
   include("array.jl")
   include("io.jl")
+  include("utilities.jl")
   include("../test/testmacro.jl")
   include("../test/pretty/prettytestmacro.jl")
 end
