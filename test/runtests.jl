@@ -3,7 +3,8 @@ using Series
 
 tests = ["array.jl",
          "io.jl",
-         "series.jl"]
+         "series.jl",
+         "utilities.jl"]
          
 
 print_with_color(:cyan, "Running tests: ") 
