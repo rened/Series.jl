@@ -100,13 +100,16 @@ end
 # might need to define SeriesArray operators between a single
 # seriespair and an Int. It's losing it's type data somehow
 
-
-function .+{T,V}(sa::Array{SeriesPair{T,V},1}, val::Float64)
-  res = SeriesPair{T,V}[]
-  for i in 1:size(sa,1)
-    push!(res, SeriesPair(sa[i].index, (sa[i].value + val)))
+for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
+  @eval begin
+    function ($op){T,V}(sa::Array{SeriesPair{T,V},1}, val::Float64)
+      res = SeriesPair{T,V}[]
+      for i in 1:size(sa,1)
+        push!(res, SeriesPair(sa[i].index, ($op)(sa[i].value, val)))
+      end
+      res
+    end
   end
-  res
 end
 
 # this toy function doesn't devolve the types to Any like above
