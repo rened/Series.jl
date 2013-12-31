@@ -67,6 +67,10 @@ for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
   end
 end
 
+# this loses the type information
+# need to find a way to preserve it like
+# the methods above it
+
 for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
   @eval begin
     function ($op){T,V}(sp::SeriesPair{T,V}, var::Union(Int, Float64))
