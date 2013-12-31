@@ -97,6 +97,8 @@ end
 # broadcasting ##################
 #################################
 
+# might need to define SeriesArray operators between a single
+# seriespair and an Int. It's losing it's type data somehow
 
 #################################
 # head, tail ####################

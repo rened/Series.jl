@@ -67,6 +67,14 @@ for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
   end
 end
 
+for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
+  @eval begin
+    function ($op){T,V}(sp::SeriesPair{T,V}, var::Union(Int, Float64))
+      res = SeriesPair(sp.index, ($op)(sp.value, var))
+    end
+  end
+end
+
 #################################
 ###### include ##################
 #################################
