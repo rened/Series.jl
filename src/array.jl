@@ -97,6 +97,20 @@ end
 # broadcasting ##################
 #################################
 
+# this doesn't need to be defined for operations between SeriesPair arrays
+# but it does for SeriesPair array and value such as Int, Float64
+
+for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
+  @eval begin
+    function ($op){T,V}(sa::Array{SeriesPair{T,V}, 1}, var::Union(Int, Float64))
+      res = SeriesPair{T,V}[]
+      for i in 1:size(sa,1)
+        push!(res, SeriesPair(sa[i].index, ($op)(sa[i].value, var)))
+      end
+      res
+    end # function
+  end # eval
+end # loop
 
 #################################
 # head, tail ####################
