@@ -97,30 +97,21 @@ end
 # broadcasting ##################
 #################################
 
-# might need to define SeriesArray operators between a single
-# seriespair and an Int. It's losing it's type data somehow
+# this doesn't need to be defined for operations between SeriesPair arrays
+# but it does for SeriesPair array and value such as Int, Float64
 
 for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
   @eval begin
-    function ($op){T,V}(sa::Array{SeriesPair{T,V},1}, val::Float64)
+    function ($op){T,V}(sa::Array{SeriesPair{T,V}, 1}, var::Union(Int, Float64))
       res = SeriesPair{T,V}[]
       for i in 1:size(sa,1)
-        push!(res, SeriesPair(sa[i].index, ($op)(sa[i].value, val)))
+        push!(res, SeriesPair(sa[i].index, ($op)(sa[i].value, var)))
       end
       res
-    end
-  end
-end
+    end # function
+  end # eval
+end # loop
 
-# this toy function doesn't devolve the types to Any like above
-
-function plus{T,V}(sa::Array{SeriesPair{T,V},1}, val::Float64)
-  res = SeriesPair{T,V}[]
-  for i in 1:size(sa,1)
-    push!(res, SeriesPair(sa[i].index, (sa[i].value + val)))
-  end
-  res
-end
 #################################
 # head, tail ####################
 #################################

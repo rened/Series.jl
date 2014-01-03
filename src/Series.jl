@@ -9,7 +9,6 @@ export SeriesPair,
        SeriesArray, 
        +, -, *, /, 
        .+, .-, .*, ./, 
-       plus, 
        readseries, 
        removenan, 
        head, tail, 
@@ -55,6 +54,7 @@ end
 ###### +, -, *, / ###############
 #################################
 
+# operations between two SeriesPairs
 for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
   @eval begin
     function ($op){T,V}(sp1::SeriesPair{T,V}, sp2::SeriesPair{T,V})
@@ -68,18 +68,15 @@ for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
   end
 end
 
-# this loses the type information
-# need to find a way to preserve it like
-# the methods above it
-
+# operations between SeriesPair and Int,Float64
 for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
   @eval begin
-    function ($op){T,V}(sp::SeriesPair{T,V}, var::Union(Int, Float64))
-      res = SeriesPair(sp.index, ($op)(sp.value, var))
+    function ($op){T,V}(sp::SeriesPair{T,V}, var::Union(Int,Float64))
+      SeriesPair(sp.index, ($op)(sp.value, var))
     end
   end
 end
-
+ 
 #################################
 ###### include ##################
 #################################
