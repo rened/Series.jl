@@ -57,7 +57,9 @@ end
 #################################
 
 # operations between two SeriesPairs
-for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
+for op in [:+, :-, :*, :/, :>, :<, :>=, :<=,
+           :.+, :.-, :.*, :./, :.>, :.<, :.>=, :.<=]
+
   @eval begin
     function ($op){T,V}(sp1::SeriesPair{T,V}, sp2::SeriesPair{T,V})
       matches = false 
