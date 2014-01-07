@@ -2,11 +2,11 @@ using MarketData
 
 fails = 0
  
-@context "names"
+@context "value, index and name"
 
-jtest(value(op)[1] == 92.06, 
-          index(op)[1] == date(1970,1,2), 
-          name(op)[1] == name(op)[2] == name(op)[3])
+jtest(value(op)[1] == 105.76, 
+      index(op)[1] == firstday, 
+      name(op)[1] == name(op)[2] == name(op)[3])
 
 @context "istrue"
 
@@ -17,6 +17,9 @@ jtest(length(istrue(ba)) == 3)
 
 @context "when"
 
-    dates = [date(1980,12,1), date(1980,12,2), date(1980,12,3)]
-
-jtest(when(op, dates)[2].value == 87.47)
+jtest(when(op, [firstday, secondday, tenthday])[1].value == 105.76, 
+      when(op, [firstday, secondday, tenthday])[2].value == 105.22,
+      when(op, [firstday, secondday, tenthday])[3].value == 111.14,
+      when(op, [firstday, secondday, tenthday])[1].index == firstday,
+      when(op, [firstday, secondday, tenthday])[2].index == secondday,
+      when(op, [firstday, secondday, tenthday])[3].index == tenthday)
