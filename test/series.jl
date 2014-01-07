@@ -1,30 +1,25 @@
-a = Jig.Quant.op[1]
-b = Jig.Quant.op[2]
-c = Jig.Quant.op[3]
+using MarketData
+
+fails = 0
 
 @context "values are correct for SeriesPair"
-@jtest(
-       a.value == 105.76
-       )
+jtest( op[1].value == 105.76)
+fails += f
+
 @context "values are correct on operators"
-@jtest( 
-       (a + a).value == 211.52,
-       (a - a).value == 0,
-       (a * a).value == 11185.1776,
-       (a / a).value == 1,
-        a / b == nothing,                     # since indexes don't match, nothing is returned
-        a < b)  # not sure why this works 
+jtest( (op[1] + op[1]).value == 211.52,
+       (op[1] - op[1]).value == 0,
+       (op[1] * op[1]).value == 11185.1776,
+       (op[1] / op[1]).value == 1,
+        op[1] / op[2] == nothing,                     # since indexes don't match, nothing is returned
+        op[1] < op[2] == nothing)  # not sure why this works 
+fails += f
      
 @context "dates are correct"
-@jtest(
-       a.index == Jig.Quant.firstday
-       )
+jtest(op[1].index == firstday)
+fails += f
 
 @context "types are correct"
-@jtest(
-
-       )
-
-
-
-end
+jtest(typeof(op) == ArraySeriesPairDateFloat64,
+      typeof(op[1]) == SeriesPairDateFloat64)
+fails += f
