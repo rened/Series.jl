@@ -7,7 +7,8 @@ module TestSeriesPair
   b = SeriesPair(2, 22)
   c = SeriesPair(3, 11)
 
-  @test a < b # not sure why this works 
+# this wasn't supposed to work and now it doesn't so this is good. Comparing when indexes != should be nothing
+# @test a < b # not sure why this works 
   @test a.index == 1
   @test a.value == 33
 

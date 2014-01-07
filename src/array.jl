@@ -112,6 +112,22 @@ for op in [:+, :-, :*, :/, :.+, :.-, :.*, :./]
   end # eval
 end # loop
 
+for op in [:>, :<, :>=, :<=,
+           :.>, :.<, :.>=, :.<=]
+  @eval begin
+    function ($op){T,V}(sa1::Array{SeriesPair{T,V}, 1}, sa2::Array{SeriesPair{T,V}, 1})
+      res = SeriesPair{T,Bool}[]
+      for i in 1:size(sa1,1)
+        for j in 1:size(sa2,1)
+          if sa1[i].index == sa2[j].index    # this is very crude, need faster algorithm
+            push!(res, SeriesPair(sa1[i].index, ($op)(sa1[i].value, sa2[j].value)))
+          end
+        end
+      end
+      res
+    end # function
+  end # eval
+end # loop
 #################################
 # head, tail ####################
 #################################
