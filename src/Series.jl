@@ -17,9 +17,7 @@ export SeriesPair,
        percentchange, 
        moving, upto,  
        byyear, bymonth, byday, bydow, bydoy, 
-       from, to, collapse, 
-       @series, 
-       @prettyseries
+       from, to, collapse 
   
 abstract AbstractSeriesPair
 
@@ -88,6 +86,4 @@ end
   include("array.jl")
   include("io.jl")
   include("utilities.jl")
-  include("../test/testmacro.jl")
-  include("../test/pretty/prettytestmacro.jl")
 end

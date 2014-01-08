@@ -1,22 +1,27 @@
-module TestSeriesPair
+using MarketData
 
-  using Base.Test
-  using Series
+fails = 0
 
-  a = SeriesPair(1, 33)
-  b = SeriesPair(2, 22)
-  c = SeriesPair(3, 11)
+@context "values are correct for SeriesPair"
+f=jtest( op[1].value == 105.76)
+fails += f
 
-# this wasn't supposed to work and now it doesn't so this is good. Comparing when indexes != should be nothing
-# @test a < b # not sure why this works 
-  @test a.index == 1
-  @test a.value == 33
+@context "values are correct on operators"
+f=jtest((op[1] + op[1]).value == 211.52,
+        (op[1] - op[1]).value == 0,
+        (op[1] * op[1]).value == 11185.1776,
+        (op[1] / op[1]).value == 1,
+         op[1] / op[2]        == nothing,  # since indexes don't match, nothing is returned
+         eval(op[1] < op[2])  == true)     # this should be nothing since indexes don't match?
+fails += f
+     
+@context "dates are correct"
+f=jtest(op[1].index  == firstday,
+        op[2].index  == secondday,
+        op[10].index == tenthday)
+fails += f
 
-  # operators
-  @test (a + a).value == 66
-  @test (a - a).value == 0
-  @test (a * a).value == 1089
-  @test (a / a).value == 1 
-  @test a / b == nothing
-
-end
+@context "types are correct"
+f=jtest(typeof(op)    == ArraySeriesPairDateFloat64,
+        typeof(op[1]) == SeriesPairDateFloat64)
+fails += f

@@ -1,117 +1,65 @@
-module TestSeriesArray
+using MarketData
+
+fails = 0
   
-  using Base.Test
-  using Series
-  using Datetime
+@context "boolean values are evaluated"
+ba = SeriesArray([1:3], trues(3))
+f=jtest( sum(value(ba)) == 3)
+fails += f
+
+@context "arrays with names"
+na = SeriesArray([1:3], [2:4], "test")
+f=jtest(na[1].name == "test", 
+        na[2].name == "test", 
+        na[3].name == "test")
+fails += f
+
+@context "readseries sorts"
+f=jtest( op[1].value == 105.76,             
+         op[1].index == firstday)
+fails += f
   
-  # arrays with Datetime index
-    op = readseries(Pkg.dir("Series/test/data/spx.csv"))
-    cl = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
-  
-  # arrays with boolean values
-    ba = SeriesArray([1:3], trues(3))
+@context "indexing"
+f=jtest(op[1].index       == firstday,
+        op[1].value       == 105.76, 
+        length(op[2:end]) == 504)  
+fails += f
 
-    @test sum(value(ba)) == 3
+@context "construct Array of values"
+arr    = Array(op, cl[2:end])
+f=jtest(size(arr)         == (505,2),
+        sum(arr[2:end,2]) == 62216.270000000004,
+        typeof(arr)       == Array{Float64, 2},
+        isnan(arr[1,2])   == true)
+fails += f
 
-  # arrays with names
-    na = SeriesArray([1:3], [2:4], "test")
- 
-    @test na[1].name == "test"
-    @test na[2].name == "test"
-    @test na[3].name == "test"
+@context "remove rows that have NaN"
+f=jtest( size(removenan(arr))                   == (504,2), 
+         isnan(sum(removenan(arr)))             == false, 
+         length(lag(op))                        == 505, 
+         isnan(sum([v.value for v in lag(op)])) == true)
+fails += f
 
-  # sorting
-    po       = flipud(op)
-    sopo     = sort(op)
+@context "broadcast operator needs rewrite" 
+# "CAUTION: sorting NOT enforced"
+# "TODO: enforce sorting"
+f=jtest((op .+ cl)[1].value == 210.98000000000002, 
+        (op .- cl)[1].value ==  0.5400000000000063, 
+        (op .* cl)[1].value ==  11128.067200000001,   
+        (op ./ cl)[1].value ==  1.0051321041627068)
+fails += f
 
-    @test sopo[1].value == 92.06             
-    @test sopo[1].index == date(1970, 1, 2)  
-  
-  # indexing
-    @test op[1].index       == date(1970, 1, 2) 
-    @test op[1].value       == 92.06
-    @test length(op[2:end]) == 506  # endof and length
+@context "head and tail"
+f=jtest(length(head(op))  == 1, 
+        length(tail(op)) == 504, 
+        head(op)[1].value == 105.76)
+fails += f
 
-  # construct Array of values
-    arr    = Array(op, cl[2:end])
-
-    @test size(arr)         == (507,2)
-    @test sum(arr[2:end,2]) == 45901.85
-    @test typeof(arr)       == Array{Float64, 2}
-    @test isnan(arr[1,2])   == true
-
-  # remove rows that have NaN
-    nonan  = removenan(arr)
-    opnan  = lag(op)
-    opno   = removenan(opnan)
-
-    @test size(nonan)       == (506,2)
-    @test isnan(sum(nonan)) == false
-    @test length(opno)     == 506
-    @test isnan(sum([v.value for v in opno])) == false
-
-  # broacast operator 
-  # CAUTION: sorting NOT enforced
-  # TODO: enforce sorting
-  
-    saadd  = op .+ cl
-    sasub  = op .- cl
-    samult = op .* cl
-    sadiv  = op ./ cl
-
-    @test saadd[1].value   == 185.06
-    @test_approx_eq sasub[1].value -0.9399999999999977   
-    @test_approx_eq samult[1].value 8561.58  
-    @test_approx_eq sadiv[1].value 0.9898924731182795
-
-  # head and tail
-    @test length(head(op))  == 1
-    @test length(tail(op)) == 506
-    @test head(op)[1].value == 92.06
-
-  # lag and lead on sorted array (though it would work on unsorted ones too)
-    @test isnan(lag(op)[1].value) == true
-    @test lag(op)[2].value        == 92.06
-    @test lag(op,2)[3].value      == 92.06
-    @test lag(op)[1].index        == date(1970, 1, 2)
-    @test lead(op)[1].value       == 93.0
-    @test lead(op)[1].index       == date(1970, 1, 2)
-
-  # percentchange
-    @test isnan(percentchange(op)[1].value)      == true
-    @test_approx_eq  percentchange(op)[2].value 0.010210732131218946
-    @test_approx_eq percentchange(op, method="log")[2].value 0.010158954764160733
-
-  # moving, upto  
-    meanop   = moving(op, mean, 10)
-    uptoop   = upto(op, sum)
-
-    @test isnan(meanop[9].value) == true
-    @test_approx_eq meanop[10].value 92.43199999999999
-    @test uptoop[4].value == 371.34
-
-  # bydate
-    yrop  = byyear(op, 1970) #1970s
-    mthop = bymonth(op, 2) # Februarys
-    dayop = byday(op, 2) # where the day is #2
-    dowop = bydow(op, 5) # fifth day of week or Fridays
-    doyop = bydoy(op, 4) # fourth day of year
-
-    @test yrop[length(yrop)].index   == date(1970,12,31) # 1970s
-    @test mthop[length(mthop)].index == date(1971,2,26)  # Februarys
-    @test dayop[length(dayop)].index == date(1971,12,2)  # day # is 2
-    @test dowop[length(dowop)].index == date(1971,12,31) # Fridays
-    @test doyop[length(doyop)].index == date(1971,1,4)   # fourth day of year
-
-  # from, to, collapse
-    opto     = to(op,1970,12,31) # includes row in series
-    opfrom   = from(op,1971,1,4) # includes row in series
-    opweekly = collapse(op, first)
-    clmnthly = collapse(cl, last, period=month)
-
-    @test opto[length(opto)].index == date(1970, 12, 31) 
-    @test opfrom[1].index          == date(1971, 1, 4) 
-    @test opweekly[2].value        == 93.00
-    @test clmnthly[1].value        == 85.02               
-    @test length(clmnthly)         == 24             
-end
+@context "lag and lead sorted array"
+f=jtest(isnan(lag(op)[1].value) == true, 
+        lag(op)[2].value        == 105.76,
+        lag(op,2)[3].value      == 105.76,
+        lag(op)[1].index        == firstday,
+        lead(op)[1].value       == 105.22, 
+        lead(op)[1].index       == firstday)
+fails += f

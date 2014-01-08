@@ -1,22 +1,15 @@
-module TestIO
+using MarketData
 
-using Base.Test
-using Series
-using Datetime
-
-  open  = readseries(Pkg.dir("Series/test/data/spx.csv"))
-  high  = readseries(Pkg.dir("Series/test/data/spx.csv"), value= 3)
-  low   = readseries(Pkg.dir("Series/test/data/spx.csv"), value= 4)
-  close = readseries(Pkg.dir("Series/test/data/spx.csv"), value= 5)
-
-  @ test open[1].value  == 92.06
-  @ test high[1].value  == 93.54
-  @ test low[1].value   == 91.79
-  @ test close[1].value == 93.0
-
-  @ test open[1].index  == date(1970, 1,2) 
-  @ test high[1].index  == date(1970, 1,2) 
-  @ test low[1].index   == date(1970, 1,2) 
-  @ test close[1].index == date(1970, 1,2) 
-
-end
+@context "values are correct"
+f=jtest(op[1].value  == 105.76,
+        hi[1].value  == 106.08,
+        lo[1].value  == 103.26,
+        cl[1].value  == 105.22) 
+fails += f
+     
+@context "dates are correct"
+f=jtest(op[1].index  == firstday, 
+        hi[1].index  == firstday, 
+        lo[1].index  == firstday, 
+        cl[1].index  == firstday)
+fails += f

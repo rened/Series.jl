@@ -1,26 +1,24 @@
-module TestUtilities
-  
-  using Base.Test
-  using Series
-  using Datetime
-  
-  # arrays with Datetime index
-    op = readseries(Pkg.dir("Series/test/data/spx.csv"))
-    cl = readseries(Pkg.dir("Series/test/data/spx.csv"), value=5)
+using MarketData
 
-    # index and value and name
-    @test value(op)[1] == 92.06
-    @test index(op)[1] == date(1970,1,2)
-    @test name(op)[1] == name(op)[2] == name(op)[3]
+fails = 0
+ 
+@context "value, index and name"
+f=jtest(value(op)[1] == 105.76, 
+        index(op)[1] == firstday, 
+        name(op)[1] == name(op)[2] == name(op)[3])
+fails += f
 
-    # istrue
-    bt = SeriesArray([1:3], trues(3))
-    ba = push!(bt, SeriesPair(4, false))
+@context "istrue"
+bt = SeriesArray([1:3], trues(3))
+ba = push!(bt, SeriesPair(4, false))
+f=jtest(length(istrue(ba)) == 3)
+fails += f
 
-    @test length(istrue(ba)) == 3
-
-    # when
-    dates = [date(1970,12,1), date(1970,12,2), date(1970,12,3)]
-
-    @test when(op, dates)[2].value == 87.47
-end
+@context "when"
+f=jtest(when(op, [firstday, secondday, tenthday])[1].value == 105.76, 
+        when(op, [firstday, secondday, tenthday])[2].value == 105.22,
+        when(op, [firstday, secondday, tenthday])[3].value == 111.14,
+        when(op, [firstday, secondday, tenthday])[1].index == firstday,
+        when(op, [firstday, secondday, tenthday])[2].index == secondday,
+        when(op, [firstday, secondday, tenthday])[3].index == tenthday)
+fails += f
