@@ -2,72 +2,64 @@ using MarketData
 
 fails = 0
   
-@context "boolean values are evaluated needs rewrite"
-   ba = SeriesArray([1:3], trues(3))
-  jtest( sum(value(ba)) == 3)
-fails += fails
+@context "boolean values are evaluated"
+ba = SeriesArray([1:3], trues(3))
+f=jtest( sum(value(ba)) == 3)
+fails += f
 
-@context "arrays with names needs rewrite"
-  na = SeriesArray([1:3], [2:4], "test")
-  jtest(na[1].name == "test", 
+@context "arrays with names"
+na = SeriesArray([1:3], [2:4], "test")
+f=jtest(na[1].name == "test", 
         na[2].name == "test", 
         na[3].name == "test")
-fails += fails
+fails += f
 
-@context "sorting needs rewrite"
-  jtest( op[1].value == 92.06,             
+@context "readseries sorts"
+f=jtest( op[1].value == 105.76,             
          op[1].index == firstday)
-fails += fails
+fails += f
   
-@context "indexing needs rewrite"
-  jtest(op[1].index       == date(1970, 1, 2),  
-        op[1].value       == 92.06, 
-        length(op[2:end]) == 506)  
-fails += fails
+@context "indexing"
+f=jtest(op[1].index       == firstday,
+        op[1].value       == 105.76, 
+        length(op[2:end]) == 504)  
+fails += f
 
-@context "construct Array of values needs rewrite"
-  arr    = Array(op, cl[2:end])
-  jtest(size(arr)         == (507,2),
-        sum(arr[2:end,2]) == 45901.85,
+@context "construct Array of values"
+arr    = Array(op, cl[2:end])
+f=jtest(size(arr)         == (505,2),
+        sum(arr[2:end,2]) == 62216.270000000004,
         typeof(arr)       == Array{Float64, 2},
         isnan(arr[1,2])   == true)
-fails += fails
+fails += f
 
-@context "remove rows that have NaN needs rewrite"
-  nonan  = removenan(arr)
-  opnan  = lag(op)
-  opno   = removenan(opnan)
-  jtest( size(nonan)       == (506,2), 
-         isnan(sum(nonan)) == false, 
-         length(opno)     == 506, 
-         isnan(sum([v.value for v in opno])) == false)
-fails += fails
+@context "remove rows that have NaN"
+f=jtest( size(removenan(arr))                   == (504,2), 
+         isnan(sum(removenan(arr)))             == false, 
+         length(lag(op))                        == 505, 
+         isnan(sum([v.value for v in lag(op)])) == true)
+fails += f
 
 @context "broadcast operator needs rewrite" 
-# @context "CAUTION: sorting NOT enforced"
-# @context "TODO: enforce sorting"
-  saadd  = op .+ cl
-  sasub  = op .- cl
-  samult = op .* cl
-  sadiv  = op ./ cl
-  jtest(saadd[1].value   == 185.06, 
-        sasub[1].value  ==  -0.9399999999999977, 
-        samult[1].value ==  8561.58,   
-        sadiv[1].value  ==  0.9898924731182795)
-fails += fails
+# "CAUTION: sorting NOT enforced"
+# "TODO: enforce sorting"
+f=jtest((op .+ cl)[1].value == 210.98000000000002, 
+        (op .- cl)[1].value ==  0.5400000000000063, 
+        (op .* cl)[1].value ==  11128.067200000001,   
+        (op ./ cl)[1].value ==  1.0051321041627068)
+fails += f
 
-@context "head and tail needs rewrite"
-  jtest(length(head(op))  == 1, 
-        length(tail(op)) == 506, 
-        head(op)[1].value == 92.06)
-fails += fails
+@context "head and tail"
+f=jtest(length(head(op))  == 1, 
+        length(tail(op)) == 504, 
+        head(op)[1].value == 105.76)
+fails += f
 
-@context "lag and lead on sorted array though it would work on unsorted ones too"
-@context "also needs total rewrite"
-  jtest(isnan(lag(op)[1].value) == true, 
-        lag(op)[2].value        == 92.06,
-        lag(op,2)[3].value      == 92.06,
-        lag(op)[1].index        == date(1970, 1, 2),
-        lead(op)[1].value       == 93.0, 
-        lead(op)[1].index       == date(1970, 1, 2))
-fails += fails
+@context "lag and lead sorted array"
+f=jtest(isnan(lag(op)[1].value) == true, 
+        lag(op)[2].value        == 105.76,
+        lag(op,2)[3].value      == 105.76,
+        lag(op)[1].index        == firstday,
+        lead(op)[1].value       == 105.22, 
+        lead(op)[1].index       == firstday)
+fails += f
