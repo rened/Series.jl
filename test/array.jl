@@ -27,10 +27,10 @@ fails += f
 
 @context "construct Array of values"
 arr    = Array(op, cl[2:end])
-f=jtest(size(arr)         == (505,2),
-        sum(arr[2:end,2]) == 62216.270000000004,
-        typeof(arr)       == Array{Float64, 2},
-        isnan(arr[1,2])   == true)
+f=jtest(size(arr)                    == (505,2),
+        round(sum(arr[2:end,2]), 2)  == 62216.27,
+        typeof(arr)                  == Array{Float64, 2},
+        isnan(arr[1,2])              == true)
 fails += f
 
 @context "remove rows that have NaN"
