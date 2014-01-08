@@ -12,7 +12,7 @@ f=jtest((op[1] + op[1]).value == 211.52,
         (op[1] * op[1]).value == 11185.1776,
         (op[1] / op[1]).value == 1,
          op[1] / op[2]        == nothing,  # since indexes don't match, nothing is returned
-         eval(op[1] < op[2])  == true)     # this should be nothing since indexes don't match?
+         eval(op[1] < op[2])  == nothing)     # this should be nothing since indexes don't match?
 fails += f
      
 @context "dates are correct"
