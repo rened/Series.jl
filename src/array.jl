@@ -128,6 +128,23 @@ for op in [:>, :<, :>=, :<=,
     end # function
   end # eval
 end # loop
+
+#################################
+# getindex ######################
+#################################
+
+function getindex{T <: Date{ISOCalendar}, V}(sa::Array{SeriesPair{T, V}, 1}, mydate::Array{Date{ISOCalendar}, 1})
+  res = SeriesPair{Date{ISOCalendar}, V}[]
+  for i in 1:size(sa,1)
+    for j in 1:size(mydate,1)
+      if sa[i].index == mydate[j]
+        push!(res, sa[i])
+      end
+    end
+  end
+  res
+end
+
 #################################
 # head, tail ####################
 #################################

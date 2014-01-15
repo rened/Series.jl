@@ -16,17 +16,21 @@ facts("Array") do
     @fact nam[3].name => "test"
   end
    
-   context("readseries sorts") do
-     @fact op[1].value => 105.76             
-     @fact op[1].index => firstday
-   end
-     
-   context("indexing") do
-     @fact op[1].index       => firstday
-     @fact op[1].value       => 105.76
-     @fact length(op[2:end]) => 504  
-   end
-   
+  context("readseries sorts") do
+    @fact op[1].value => 105.76             
+    @fact op[1].index => firstday
+  end
+    
+  context("getindex works on Date{ISOCalendar}") do
+    @fact op[[firstday:tenthday]][10].index => tenthday
+  end
+
+  context("indexing") do
+    @fact op[1].index       => firstday
+    @fact op[1].value       => 105.76
+    @fact length(op[2:end]) => 504  
+  end
+  
   context("construct Array of values") do
     @fact size(arr)                    => (505,2)
     @fact round(sum(arr[2:end,2]), 2)  => 62216.27
