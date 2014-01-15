@@ -46,7 +46,7 @@ end
 
 function show(io::IO, p::SeriesPair)
   typeof(p.value) == Float64?
-  print(io, p.index, "  ",  join([@sprintf("%.2f",x) for x in p.value]," ")):
+  print(io, p.index, "  ",  join([@sprintf("%.4f",x) for x in p.value]," ")):
   print(io, p.index, "  ",  p.value)
 end
 

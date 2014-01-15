@@ -3,9 +3,9 @@ using MarketData, FactCheck
 facts("Time") do
 
   context("percentchange") do
-    @fact isnan(percentchange(op)[1].value)        => true 
-    @fact percentchange(op)[2].value               => -0.005105900151286568
-    @fact percentchange(op, method="log")[2].value => -0.005118979800715628
+    @fact isnan(percentchange(op)[1].value)           => false
+    @fact percentchange(op)[1].value                  => -0.005118979800715628
+    @fact percentchange(op, method="simple")[1].value => -0.005105900151286568
   end
   
   context("moving, upto") do

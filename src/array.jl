@@ -170,11 +170,12 @@ lead{T,V}(sa::Array{SeriesPair{T,V},1}) = lead(sa, 1)
 # percentchange #################
 #################################
 
-function percentchange{T,V}(sa::Array{SeriesPair{T,V},1}; method="simple") 
+function percentchange{T,V}(sa::Array{SeriesPair{T,V},1}; method="log") 
 
-  logval    = vcat(NaN, (V[s.value for s in sa] |> log |> diff))
-  simpleval = vcat(NaN, (V[s.value for s in sa] |> log |> diff |> expm1))
-  idx       = T[s.index for s in sa]
+  logval    = V[s.value for s in sa] |> log |> diff
+  simpleval = V[s.value for s in sa] |> log |> diff |> expm1
+  idx       = T[s.index for s in sa][2:end]
+
   if method == "simple" 
     SeriesArray(idx, simpleval)
   elseif method == "log" 
