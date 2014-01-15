@@ -51,6 +51,20 @@ function show(io::IO, p::SeriesPair)
 end
 
 #################################
+###### getindex #################
+#################################
+
+function getindex{T <: Date{ISOCalendar}, V}(sa::Array{SeriesPair{T, V}, 1}, mydate::Date{ISOCalendar})
+  for i in 1:size(sa,1)
+    if mydate == sa[i].index 
+      return sa[i] 
+    else 
+      nothing
+    end
+  end
+end
+
+#################################
 ###### +, -, *, / ###############
 #################################
 

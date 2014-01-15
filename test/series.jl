@@ -1,4 +1,4 @@
-using MarketData, FactCheck
+using MarketData, FactCheck, Datetime
 
 facts("Series") do
 
@@ -6,6 +6,10 @@ facts("Series") do
     @fact op[1].value => 105.76
   end
   
+  context("getindex works on Date{ISOCalendar}") do
+    @fact op[date(1980,1,3)].value => 105.76
+  end
+
   context("values are correct on operators") do
     @fact (op[1] + op[1]).value => 211.52
     @fact (op[1] - op[1]).value => 0
