@@ -6,6 +6,10 @@ facts("Series") do
     @fact op[1].value => 105.76
   end
   
+  context("getindex works on Date{ISOCalendar}") do
+    @fact op[firstday].value => 105.76
+  end
+
   context("values are correct on operators") do
     @fact (op[1] + op[1]).value => 211.52
     @fact (op[1] - op[1]).value => 0
