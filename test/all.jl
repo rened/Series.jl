@@ -1,3 +1,5 @@
+using FactCheck
+
 include("series.jl")
 include("array.jl")
 include("io.jl")
