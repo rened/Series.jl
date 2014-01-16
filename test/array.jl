@@ -65,3 +65,5 @@ facts("Array") do
     @fact lead(op)[1].index       => firstday
   end
 end
+
+exitstatus()
