@@ -1,4 +1,4 @@
-using FactCheck, MarketData
+using MarketData
 
 facts("IO") do
 
